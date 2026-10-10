@@ -16,21 +16,21 @@ Responde con tus palabras. Las soluciones modelo están bloqueadas: intenta prim
 
 ## Ejercicio P1.2
 
-**Estados y transiciones.** Dibuja el diagrama de estados de un proceso (tres estados) y explica **cuándo ocurre cada una de las cuatro transiciones**.
+**Estados y transiciones.** Dibuja el diagrama de estados de un proceso (**inicio, preparado, en ejecución, bloqueado y terminado**) y explica **cuándo ocurre cada una de las seis transiciones**. Después indica si es **posible** cada una de estas, y por qué: preparado → bloqueado, bloqueado → en ejecución, en ejecución → preparado y terminado → preparado.
 
 <details class="sol" data-key="procesos/u01/P1.2">
 <summary>Solución modelo (bloqueada)</summary>
-<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>Tres estados: EN EJECUCIÓN, PREPARADO y BLOQUEADO.
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>Cinco estados: INICIO, PREPARADO, EN EJECUCIÓN, BLOQUEADO y TERMINADO.
 ... (resto de la solución bloqueado)</code></pre></div>
 </details>
 
 ## Ejercicio P1.3
 
-**Vida de un proceso.** Un proceso lee un fichero grande del disco y después muestra su contenido. Describe **por qué estados pasa** desde que se lanza hasta que termina, indicando el número de la transición en cada cambio.
+**Vida de un proceso.** Un proceso lee un fichero grande del disco y después muestra su contenido. Describe **por qué estados pasa** desde que se lanza hasta que termina, indicando el número de la transición en cada cambio (usa la numeración de las seis transiciones de [1.2](../u01/02-estados.md)).
 
 <details class="sol" data-key="procesos/u01/P1.3">
 <summary>Solución modelo (bloqueada)</summary>
-<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>1. Al lanzarlo queda PREPARADO, esperando la CPU.
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>1. Se lanza el proceso: queda en INICIO mientras el sistema lo crea y lo carga en memoria.
 ... (resto de la solución bloqueado)</code></pre></div>
 </details>
 

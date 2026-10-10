@@ -12,7 +12,7 @@ Hay muchos procesos preparados y una sola CPU: ¿a cuál le toca? Los **algoritm
 
 ## Antes de empezar: qué debes dominar
 
-* La [unidad 1](../u01/index.md): qué es un proceso y sus estados (sobre todo, la transición de **preparado a ejecución**).
+* La [unidad 1](../u01/index.md): qué es un proceso y sus estados (sobre todo, la transición de **preparado a ejecución** y la de **ejecución a preparado**).
 * Operar con fracciones sencillas: el índice de servicio se calcula como una fracción.
 
 ## Ejercicios de la unidad

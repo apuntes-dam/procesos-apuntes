@@ -13,7 +13,7 @@ Para gestionar cada proceso, el sistema guarda una estructura de datos llamada *
 
 | Dato | Para qué sirve |
 |---|---|
-| **Estado actual** | Si el proceso está en ejecución, preparado o bloqueado (ver [1.2](02-estados.md)) |
+| **Estado actual** | En qué estado está: inicio, preparado, en ejecución, bloqueado o terminado (ver [1.2](02-estados.md)) |
 | **Identificador (PID)** | Un número que identifica al proceso; con él se le puede consultar o detener |
 | **Prioridad** | Qué importancia tiene frente a otros. La asigna el sistema según cómo está diseñado y puede cambiarla el administrador |
 | **Ubicación en memoria** | En qué zona de la memoria está. Lo normal es que cada proceso tenga su zona independiente; en el peor caso se comparten zonas con otros |

@@ -28,9 +28,9 @@
 * Un proceso que ya está en la CPU **no se expulsa por un empate**.
 * En Round Robin, los que llegan en el instante en que acaba un quantum **entran en la cola antes** que el proceso expulsado.
 
-## Los tres estados
+## Los cinco estados
 
-**En ejecución → Bloqueado** (1: espera datos) · **En ejecución → Preparado** (2: fin de turno) · **Preparado → En ejecución** (3: le toca) · **Bloqueado → Preparado** (4: ocurre el evento).
+**Inicio → Preparado** (1: se admite) · **Preparado → En ejecución** (2: le toca) · **En ejecución → Preparado** (3: fin de turno o expulsión) · **En ejecución → Bloqueado** (4: espera datos) · **Bloqueado → Preparado** (5: ocurre el evento) · **En ejecución → Terminado** (6: acaba).
 
 ## Mejor algoritmo
 
