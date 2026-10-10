@@ -2,7 +2,7 @@
 
 <div class="ej-gate" data-unit="u02" data-nombre="U2 · Planificación de la CPU"></div>
 
-Cinco ejercicios con cinco procesos cada uno. Resuélvelos **a mano o en una hoja de cálculo** y comprueba el resultado con el [simulador](05-simulador.md) solo al final. En todos, **mayor número = mayor prioridad** y los empates se resuelven por orden de llegada.
+Cinco ejercicios con cinco procesos cada uno. Resuélvelos **a mano o en una hoja de cálculo** y comprueba el resultado con el [simulador](05-simulador.md) solo al final. Puedes dibujar el diagrama en la [plantilla de hoja de cálculo](../assets/plantilla-procesos.xlsx), que calcula T, E e I contando las letras. En todos, **mayor número = mayor prioridad** y los empates se resuelven por orden de llegada.
 
 ## Ejercicio P2.1
 

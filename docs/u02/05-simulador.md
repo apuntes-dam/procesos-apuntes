@@ -12,3 +12,6 @@ Escribe los procesos (nombre, instante de llegada, tiempo de ejecución y priori
 
 !!! tip "Úsalo para comprobar, no para copiar"
     Resuelve primero **a mano** los [ejercicios](ejercicios.md) y usa el simulador para ver dónde te has equivocado: los exámenes se hacen sin él.
+
+!!! note "¿Prefieres una hoja de cálculo?"
+    La [plantilla descargable](01-calculos.md#hacerlo-en-una-hoja-de-calculo) tiene la cuadrícula del diagrama y calcula T, E e I contando las letras que dibujes.

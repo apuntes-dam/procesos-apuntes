@@ -63,6 +63,20 @@ Como los procesos se dibujan **uno por fila** (el último arriba y el primero ab
 4. Calcula **T**, **E** e **I** de cada uno y las **medias**.
 5. Comprueba el diagrama: en cada fila hay tantas `x` como ciclos de ejecución, y en cada columna **una sola `x`**. Si no hay huecos, el número total de `x` es la suma de los tiempos de ejecución.
 
+## Hacerlo en una hoja de cálculo
+
+En clase el diagrama se dibuja en una **hoja de cálculo**. Esta plantilla (para Excel o un programa compatible) ya trae la cuadrícula del diagrama y la tabla de tiempos:
+
+[Descargar la plantilla (.xlsx)](../assets/plantilla-procesos.xlsx){ .md-button download }
+
+* **Hoja «Plantilla»**: escribe los datos de los procesos en las celdas azules y dibuja el diagrama con `l`, `e` y `x` (las celdas se colorean solas). Los tiempos **T**, **E** e **I** y sus medias se **calculan solos** contando las letras de cada fila.
+* **Columna «Comprobación»**: avisa si el diagrama no cuadra (faltan o sobran `x`, falta la `l` o no está en el instante de llegada).
+* **Hoja «Ejemplo resuelto»**: el FCFS de esta página, ya dibujado.
+* **Hoja «Cómo se usa»**: las instrucciones.
+
+!!! note "Qué calcula y qué no"
+    La plantilla **no resuelve** el algoritmo: tú decides quién usa la CPU y dibujas el diagrama. Solo calcula los tiempos a partir de lo que has dibujado y comprueba que el diagrama es coherente.
+
 Todos los ejemplos de las páginas siguientes usan **los mismos cuatro procesos**, para poder comparar los algoritmos:
 
 | Proceso | Ciclo de llegada (ti) | Ciclos de ejecución (t) |
