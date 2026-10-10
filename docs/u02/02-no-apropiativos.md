@@ -8,9 +8,11 @@ En estos algoritmos, **una vez que un proceso toma la CPU, la conserva hasta que
 
 **Orden de ejecución:** A (0-3) → B (3-4) → C (4-6) → D (6-7)
 
-<div class="gantt-wrap"><table class="gantt"><thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><th>A</th><td class="g0"></td><td class="g0"></td><td class="g0"></td><td></td><td></td><td></td><td></td></tr><tr><th>B</th><td></td><td></td><td></td><td class="g1"></td><td></td><td></td><td></td></tr><tr><th>C</th><td></td><td></td><td></td><td></td><td class="g2"></td><td class="g2"></td><td></td></tr><tr><th>D</th><td></td><td></td><td></td><td></td><td></td><td></td><td class="g3"></td></tr></tbody></table></div>
+<div class="gantt-wrap"><table class="gantt"><tbody><tr><th>D</th><td></td><td></td><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="ge">e</td><td class="gx g3">x</td></tr><tr><th>C</th><td></td><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="gx g2">x</td><td class="gx g2">x</td><td></td></tr><tr><th>B</th><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="gx g1">x</td><td></td><td></td><td></td></tr><tr><th>A</th><td class="gl">l</td><td class="gx g0">x</td><td class="gx g0">x</td><td class="gx g0">x</td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></tfoot></table></div>
 
-| Proceso | Llegada (ti) | Ejecución (t) | Fin (tf) | T = tf − ti | E = T − t | I = t / T |
+<p class="gantt-leyenda"><strong>l</strong> = llegada · <strong>e</strong> = espera · <strong>x</strong> = ejecución</p>
+
+| Proceso | Ciclo de llegada (ti) | Ciclos de ejecución (t) | Instante de fin (tf) | Tiempo de servicio (T = tf − ti) | Tiempo de espera (E = T − t) | Índice de servicio (I = t / T) |
 |---|---|---|---|---|---|---|
 | A | 0 | 3 | 3 | 3 | 0 | 1 |
 | B | 2 | 1 | 4 | 2 | 1 | 1/2 |
@@ -26,9 +28,11 @@ Como A llega primero y dura 3, B, C y D esperan aunque sean muy cortos. Eso es l
 
 **Orden de ejecución:** A (0-3) → B (3-4) → D (4-5) → C (5-7)
 
-<div class="gantt-wrap"><table class="gantt"><thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><th>A</th><td class="g0"></td><td class="g0"></td><td class="g0"></td><td></td><td></td><td></td><td></td></tr><tr><th>B</th><td></td><td></td><td></td><td class="g1"></td><td></td><td></td><td></td></tr><tr><th>C</th><td></td><td></td><td></td><td></td><td></td><td class="g2"></td><td class="g2"></td></tr><tr><th>D</th><td></td><td></td><td></td><td></td><td class="g3"></td><td></td><td></td></tr></tbody></table></div>
+<div class="gantt-wrap"><table class="gantt"><tbody><tr><th>D</th><td></td><td></td><td></td><td></td><td class="gl">l</td><td class="gx g3">x</td><td></td><td></td></tr><tr><th>C</th><td></td><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="ge">e</td><td class="gx g2">x</td><td class="gx g2">x</td></tr><tr><th>B</th><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="gx g1">x</td><td></td><td></td><td></td></tr><tr><th>A</th><td class="gl">l</td><td class="gx g0">x</td><td class="gx g0">x</td><td class="gx g0">x</td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></tfoot></table></div>
 
-| Proceso | Llegada (ti) | Ejecución (t) | Fin (tf) | T = tf − ti | E = T − t | I = t / T |
+<p class="gantt-leyenda"><strong>l</strong> = llegada · <strong>e</strong> = espera · <strong>x</strong> = ejecución</p>
+
+| Proceso | Ciclo de llegada (ti) | Ciclos de ejecución (t) | Instante de fin (tf) | Tiempo de servicio (T = tf − ti) | Tiempo de espera (E = T − t) | Índice de servicio (I = t / T) |
 |---|---|---|---|---|---|---|
 | A | 0 | 3 | 3 | 3 | 0 | 1 |
 | B | 2 | 1 | 4 | 2 | 1 | 1/2 |
@@ -44,9 +48,11 @@ Al terminar A (instante 3) han llegado B (t = 1) y C (t = 2): gana B por ser má
 
 **Orden de ejecución:** A (0-3) → C (3-5) → D (5-6) → B (6-7)
 
-<div class="gantt-wrap"><table class="gantt"><thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><th>A</th><td class="g0"></td><td class="g0"></td><td class="g0"></td><td></td><td></td><td></td><td></td></tr><tr><th>B</th><td></td><td></td><td></td><td></td><td></td><td></td><td class="g1"></td></tr><tr><th>C</th><td></td><td></td><td></td><td class="g2"></td><td class="g2"></td><td></td><td></td></tr><tr><th>D</th><td></td><td></td><td></td><td></td><td></td><td class="g3"></td><td></td></tr></tbody></table></div>
+<div class="gantt-wrap"><table class="gantt"><tbody><tr><th>D</th><td></td><td></td><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="gx g3">x</td><td></td></tr><tr><th>C</th><td></td><td></td><td></td><td class="gl">l</td><td class="gx g2">x</td><td class="gx g2">x</td><td></td><td></td></tr><tr><th>B</th><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="ge">e</td><td class="ge">e</td><td class="ge">e</td><td class="gx g1">x</td></tr><tr><th>A</th><td class="gl">l</td><td class="gx g0">x</td><td class="gx g0">x</td><td class="gx g0">x</td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></tfoot></table></div>
 
-| Proceso | Llegada (ti) | Ejecución (t) | Prioridad | Fin (tf) | T = tf − ti | E = T − t | I = t / T |
+<p class="gantt-leyenda"><strong>l</strong> = llegada · <strong>e</strong> = espera · <strong>x</strong> = ejecución</p>
+
+| Proceso | Ciclo de llegada (ti) | Ciclos de ejecución (t) | Prioridad | Instante de fin (tf) | Tiempo de servicio (T = tf − ti) | Tiempo de espera (E = T − t) | Índice de servicio (I = t / T) |
 |---|---|---|---|---|---|---|---|
 | A | 0 | 3 | 2 | 3 | 3 | 0 | 1 |
 | B | 2 | 1 | 1 | 7 | 5 | 4 | 1/5 |
@@ -66,9 +72,11 @@ donde **W** es el tiempo que lleva esperando en la cola de preparados y **t** su
 
 **Orden de ejecución:** A (0-3) → B (3-4) → C (4-6) → D (6-7)
 
-<div class="gantt-wrap"><table class="gantt"><thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><th>A</th><td class="g0"></td><td class="g0"></td><td class="g0"></td><td></td><td></td><td></td><td></td></tr><tr><th>B</th><td></td><td></td><td></td><td class="g1"></td><td></td><td></td><td></td></tr><tr><th>C</th><td></td><td></td><td></td><td></td><td class="g2"></td><td class="g2"></td><td></td></tr><tr><th>D</th><td></td><td></td><td></td><td></td><td></td><td></td><td class="g3"></td></tr></tbody></table></div>
+<div class="gantt-wrap"><table class="gantt"><tbody><tr><th>D</th><td></td><td></td><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="ge">e</td><td class="gx g3">x</td></tr><tr><th>C</th><td></td><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="gx g2">x</td><td class="gx g2">x</td><td></td></tr><tr><th>B</th><td></td><td></td><td class="gl">l</td><td class="ge">e</td><td class="gx g1">x</td><td></td><td></td><td></td></tr><tr><th>A</th><td class="gl">l</td><td class="gx g0">x</td><td class="gx g0">x</td><td class="gx g0">x</td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></tfoot></table></div>
 
-| Proceso | Llegada (ti) | Ejecución (t) | Fin (tf) | T = tf − ti | E = T − t | I = t / T |
+<p class="gantt-leyenda"><strong>l</strong> = llegada · <strong>e</strong> = espera · <strong>x</strong> = ejecución</p>
+
+| Proceso | Ciclo de llegada (ti) | Ciclos de ejecución (t) | Instante de fin (tf) | Tiempo de servicio (T = tf − ti) | Tiempo de espera (E = T − t) | Índice de servicio (I = t / T) |
 |---|---|---|---|---|---|---|
 | A | 0 | 3 | 3 | 3 | 0 | 1 |
 | B | 2 | 1 | 4 | 2 | 1 | 1/2 |

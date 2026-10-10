@@ -14,7 +14,7 @@ Cinco ejercicios con cinco procesos cada uno. Resuélvelos **a mano o en una hoj
 * Round Robin (q = 3)
 * Prioridad apropiativa
 
-| Proceso | Llegada | Ejecución | Prioridad |
+| Proceso | Ciclo de llegada | Ciclos de ejecución | Prioridad |
 |---|---|---|---|
 | P1 | 0 | 3 | 5 |
 | P2 | 1 | 5 | 1 |
@@ -22,7 +22,7 @@ Cinco ejercicios con cinco procesos cada uno. Resuélvelos **a mano o en una hoj
 | P4 | 3 | 12 | 6 |
 | P5 | 4 | 2 | 1 |
 
-Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
+Para **cada algoritmo**: dibuja el **diagrama de Gantt** con la notación de clase (**l** llegada, **e** espera, **x** ejecución; en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
 
 <details class="sol" data-key="procesos/u02/P2.1">
 <summary>Solución modelo (bloqueada)</summary>
@@ -40,7 +40,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 * Round Robin (q = 2)
 * SRT
 
-| Proceso | Llegada | Ejecución | Prioridad |
+| Proceso | Ciclo de llegada | Ciclos de ejecución | Prioridad |
 |---|---|---|---|
 | P1 | 1 | 5 | 5 |
 | P2 | 1 | 11 | 2 |
@@ -48,7 +48,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 | P4 | 3 | 6 | 3 |
 | P5 | 4 | 2 | 1 |
 
-Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
+Para **cada algoritmo**: dibuja el **diagrama de Gantt** con la notación de clase (**l** llegada, **e** espera, **x** ejecución; en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
 
 <details class="sol" data-key="procesos/u02/P2.2">
 <summary>Solución modelo (bloqueada)</summary>
@@ -66,7 +66,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 * Round Robin (q = 4)
 * Prioridad apropiativa
 
-| Proceso | Llegada | Ejecución | Prioridad |
+| Proceso | Ciclo de llegada | Ciclos de ejecución | Prioridad |
 |---|---|---|---|
 | P1 | 0 | 2 | 1 |
 | P2 | 2 | 1 | 2 |
@@ -74,7 +74,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 | P4 | 3 | 6 | 3 |
 | P5 | 5 | 2 | 1 |
 
-Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
+Para **cada algoritmo**: dibuja el **diagrama de Gantt** con la notación de clase (**l** llegada, **e** espera, **x** ejecución; en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
 
 <details class="sol" data-key="procesos/u02/P2.3">
 <summary>Solución modelo (bloqueada)</summary>
@@ -92,7 +92,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 * Round Robin (q = 2)
 * Prioridad apropiativa
 
-| Proceso | Llegada | Ejecución | Prioridad |
+| Proceso | Ciclo de llegada | Ciclos de ejecución | Prioridad |
 |---|---|---|---|
 | P1 | 0 | 1 | 1 |
 | P2 | 3 | 1 | 2 |
@@ -100,7 +100,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 | P4 | 4 | 2 | 3 |
 | P5 | 5 | 2 | 1 |
 
-Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
+Para **cada algoritmo**: dibuja el **diagrama de Gantt** con la notación de clase (**l** llegada, **e** espera, **x** ejecución; en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
 
 <details class="sol" data-key="procesos/u02/P2.4">
 <summary>Solución modelo (bloqueada)</summary>
@@ -118,7 +118,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 * Round Robin (q = 4)
 * Prioridad apropiativa
 
-| Proceso | Llegada | Ejecución | Prioridad |
+| Proceso | Ciclo de llegada | Ciclos de ejecución | Prioridad |
 |---|---|---|---|
 | P1 | 0 | 1 | 1 |
 | P2 | 2 | 3 | 2 |
@@ -126,7 +126,7 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálcul
 | P4 | 3 | 2 | 3 |
 | P5 | 5 | 2 | 1 |
 
-Para **cada algoritmo**: dibuja el **diagrama de Gantt** (en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
+Para **cada algoritmo**: dibuja el **diagrama de Gantt** con la notación de clase (**l** llegada, **e** espera, **x** ejecución; en una hoja de cálculo o a mano) y calcula el instante de finalización (tf), el **tiempo de servicio (T)**, el **tiempo de espera (E)** y el **índice de servicio (I)** de cada proceso, con las **medias** de T, E e I. Al final, indica **qué algoritmo es el mejor** para estos procesos y por qué. Recuerda: mayor número = mayor prioridad.
 
 <details class="sol" data-key="procesos/u02/P2.5">
 <summary>Solución modelo (bloqueada)</summary>

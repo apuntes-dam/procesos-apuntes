@@ -13,8 +13,8 @@ Los algoritmos se clasifican según lo que pasa cuando **llega un proceso nuevo*
 
 Cada proceso se describe con:
 
-* **Instante de llegada (ti)**: cuándo llega a la cola de preparados.
-* **Tiempo de ejecución (t)**: cuántos ciclos de CPU necesita en total.
+* **Ciclo de llegada (ti)**: cuándo llega a la cola de preparados.
+* **Ciclos de ejecución (t)**: cuántos ciclos de CPU necesita en total.
 * **Prioridad**: solo en los algoritmos de prioridad.
 
 ## Lo que se calcula
@@ -34,7 +34,20 @@ Se rellena una tabla con una fila por proceso y, al final, las **medias** de T, 
 
 ## El diagrama de Gantt
 
-Es una gráfica con **el tiempo en horizontal** y **un proceso por fila**: se colorea la casilla de cada instante en el que ese proceso usa la CPU. Se lee de dos formas: por filas (cuánto y cuándo se ejecuta cada proceso) y por columnas (qué proceso tiene la CPU en cada instante; solo puede haber uno).
+Es una gráfica con **el tiempo en horizontal** y **un proceso por fila**. En clase se dibuja en una hoja de cálculo con tres letras, que muestran **todo lo que le pasa a cada proceso**, no solo cuándo usa la CPU:
+
+| Letra | Significa | Dónde aparece |
+|---|---|---|
+| **l** | **Llegada** | Una sola vez, en la columna del instante en que llega el proceso |
+| **e** | **Espera** | Una por cada unidad de tiempo que el proceso espera en la cola de preparados |
+| **x** | **Ejecución** | Una por cada unidad de tiempo que el proceso usa la CPU |
+
+Cada letra ocupa **una columna**, y la columna lleva el número del instante en que **acaba** esa unidad de tiempo. Por ejemplo, un proceso que llega en el instante 1, espera dos unidades y se ejecuta tres se dibuja `l e e x x x` en las columnas 1 a 6, y termina (tf) en el instante 6.
+
+Como los procesos se dibujan **uno por fila** (el último arriba y el primero abajo, con el eje del tiempo debajo), el diagrama se lee de dos formas: por filas (qué le pasa a cada proceso) y por columnas (qué proceso tiene la CPU en cada instante: en cada columna solo puede haber **una `x`**).
+
+!!! tip "Del diagrama a los tiempos"
+    Contando letras de la fila de un proceso: **t** = número de `x`, **E** = número de `e` y **T** = número de `e` más número de `x`. Si el diagrama está bien hecho, `T − E = t` siempre. Es una buena forma de **comprobar** un ejercicio.
 
 ## Reglas que se aplican siempre
 
@@ -46,13 +59,13 @@ Es una gráfica con **el tiempo en horizontal** y **un proceso por fila**: se co
 
 1. Ordena los procesos por **instante de llegada**.
 2. Avanza el reloj. En cada **decisión** (la CPU queda libre, o llega un proceso en un algoritmo apropiativo), mira **qué procesos están preparados** y aplica la regla del algoritmo.
-3. Anota en el Gantt quién usa la CPU y cuándo, y apunta el **tf** de cada proceso al terminar.
+3. Anota en el Gantt las letras de cada proceso (`l` al llegar, `e` mientras espera y `x` mientras usa la CPU) y apunta el **tf** de cada proceso al terminar.
 4. Calcula **T**, **E** e **I** de cada uno y las **medias**.
-5. Comprueba que la **suma de los tiempos de ejecución** es igual a los ciclos que ocupa el Gantt (si no hay huecos).
+5. Comprueba el diagrama: en cada fila hay tantas `x` como ciclos de ejecución, y en cada columna **una sola `x`**. Si no hay huecos, el número total de `x` es la suma de los tiempos de ejecución.
 
 Todos los ejemplos de las páginas siguientes usan **los mismos cuatro procesos**, para poder comparar los algoritmos:
 
-| Proceso | Llegada (ti) | Ejecución (t) |
+| Proceso | Ciclo de llegada (ti) | Ciclos de ejecución (t) |
 |---|---|---|
 | A | 0 | 3 |
 | B | 2 | 1 |

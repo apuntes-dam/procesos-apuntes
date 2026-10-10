@@ -115,7 +115,24 @@
     return { gantt: unir(seg), filas: filas, medias: medias };
   }
 
-  var api = { simular: simular, fracTxt: fracTxt, decTxt: decTxt, NOMBRES: NOMBRES };
+  /* Notación del diagrama de Gantt de clase: una letra por instante, de 0 al final del diagrama.
+     "l" = llegada, "e" = espera (la unidad de tiempo que acaba en ese instante la pasa en la cola),
+     "x" = ejecución (la pasa en la CPU) y "" fuera de la vida del proceso. */
+  function celdas(r, nombre) {
+    var fin = r.gantt.reduce(function (m, s) { return Math.max(m, s[2]); }, 0);
+    var f = r.filas.filter(function (x) { return x.nombre === nombre; })[0];
+    var corre = {};
+    r.gantt.forEach(function (s) { if (s[0] === nombre) for (var k = s[1] + 1; k <= s[2]; k++) corre[k] = true; });
+    var fila = [];
+    for (var k = 0; k <= fin; k++) {
+      if (k === f.llegada) fila.push("l");
+      else if (k > f.llegada && k <= f.tf) fila.push(corre[k] ? "x" : "e");
+      else fila.push("");
+    }
+    return fila;
+  }
+
+  var api = { simular: simular, celdas: celdas, fracTxt: fracTxt, decTxt: decTxt, NOMBRES: NOMBRES };
   if (typeof module !== "undefined" && module.exports) { module.exports = api; }
   if (typeof window === "undefined") return;
   window.PlanificadorCPU = api;
@@ -201,23 +218,29 @@
       var qv = Math.max(1, parseInt(q.value, 10) || 2);
       var r = simular(sel.value, d.procs, qv, !inv.checked);
       var fin = r.gantt.reduce(function (m, s) { return Math.max(m, s[2]); }, 0);
-      var ocup = {};
-      r.gantt.forEach(function (s) { for (var i = s[1]; i < s[2]; i++) ocup[s[0] + "|" + i] = true; });
-      var cab = "<th></th>";
-      for (var i = 0; i < fin; i++) cab += "<th>" + i + "</th>";
-      var filas = d.procs.map(function (p, k) {
-        var c = "<th>" + p.nombre + "</th>";
-        for (var i = 0; i < fin; i++) c += ocup[p.nombre + "|" + i] ? '<td class="g' + (k % 8) + '"></td>' : "<td></td>";
-        return "<tr>" + c + "</tr>";
-      }).join("");
+      var filas = "";
+      for (var k = d.procs.length - 1; k >= 0; k--) {
+        var c = "<th>" + d.procs[k].nombre + "</th>";
+        celdas(r, d.procs[k].nombre).forEach(function (letra) {
+          if (letra === "x") c += '<td class="gx g' + (k % 8) + '">x</td>';
+          else if (letra === "e") c += '<td class="ge">e</td>';
+          else if (letra === "l") c += '<td class="gl">l</td>';
+          else c += "<td></td>";
+        });
+        filas += "<tr>" + c + "</tr>";
+      }
+      var eje = "<th></th>";
+      for (var i = 0; i <= fin; i++) eje += "<th>" + i + "</th>";
       var orden = r.gantt.map(function (s) { return s[0] + " (" + s[1] + "-" + s[2] + ")"; }).join(" → ");
-      var t = '<table><thead><tr><th>Proceso</th><th>ti</th><th>t</th><th>Prioridad</th><th>tf</th><th>T = tf − ti</th><th>E = T − t</th><th>I = t / T</th></tr></thead><tbody>';
+      var t = '<table><thead><tr><th>Proceso</th><th>Ciclo de llegada (ti)</th><th>Ciclos de ejecución (t)</th><th>Prioridad</th><th>Instante de fin (tf)</th>' +
+        '<th>Tiempo de servicio (T = tf − ti)</th><th>Tiempo de espera (E = T − t)</th><th>Índice de servicio (I = t / T)</th></tr></thead><tbody>';
       r.filas.forEach(function (f) {
         t += "<tr><td>" + f.nombre + "</td><td>" + f.llegada + "</td><td>" + f.t + "</td><td>" + f.prio + "</td><td>" + f.tf + "</td><td>" + f.T + "</td><td>" + f.E + "</td><td>" + fracTxt(f.I) + "</td></tr>";
       });
       t += '<tr><td><strong>Medias</strong></td><td></td><td></td><td></td><td></td><td><strong>' + decTxt(r.medias.T) + "</strong></td><td><strong>" + decTxt(r.medias.E) + "</strong></td><td><strong>" + decTxt(r.medias.I) + "</strong></td></tr></tbody></table>";
       salida.innerHTML = "<p><strong>Orden de ejecución:</strong> " + orden + "</p>" +
-        '<div class="gantt-wrap"><table class="gantt"><thead><tr>' + cab + "</tr></thead><tbody>" + filas + "</tbody></table></div>" + t;
+        '<div class="gantt-wrap"><table class="gantt"><tbody>' + filas + "</tbody><tfoot><tr>" + eje + "</tr></tfoot></table></div>" +
+        '<p class="gantt-leyenda"><strong>l</strong> = llegada · <strong>e</strong> = espera · <strong>x</strong> = ejecución</p>' + t;
     }
     bCalc.addEventListener("click", calcular);
     calcular();
