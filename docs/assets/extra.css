@@ -1,0 +1,22 @@
+:root > * { --md-primary-fg-color: #00695c; --md-accent-fg-color: #4db6ac; }
+[data-md-color-scheme="slate"] { --md-hue: 175; }
+.md-header__button.md-logo img { height: 1.6rem; }
+
+.gantt-wrap { overflow-x: auto; margin: .6rem 0 1rem; }
+table.gantt { border-collapse: collapse; font-size: .72rem; width: auto; display: table; }
+table.gantt th, table.gantt td { border: 1px solid var(--md-default-fg-color--lighter); padding: 0; min-width: 1.6rem; height: 1.6rem; text-align: center; }
+table.gantt thead th { font-weight: 400; color: var(--md-default-fg-color--light); background: none; }
+table.gantt tbody th { text-align: left; padding: 0 .5rem; font-weight: 600; white-space: nowrap; background: none; }
+table.gantt td.g0 { background: #1e88e5; } table.gantt td.g1 { background: #e53935; } table.gantt td.g2 { background: #43a047; }
+table.gantt td.g3 { background: #fb8c00; } table.gantt td.g4 { background: #8e24aa; } table.gantt td.g5 { background: #00acc1; }
+table.gantt td.g6 { background: #6d4c41; } table.gantt td.g7 { background: #d81b60; }
+.sim-cpu table { font-size: .8rem; }
+.sim-cpu input[type=number], .sim-cpu input.s-nom { width: 4.5rem; padding: .15rem .3rem; border: 1px solid var(--md-default-fg-color--lighter); border-radius: 4px;
+  background: var(--md-default-bg-color); color: var(--md-default-fg-color); }
+.sim-cpu select { max-width: 100%; padding: .2rem .3rem; background: var(--md-default-bg-color); color: var(--md-default-fg-color); border: 1px solid var(--md-default-fg-color--lighter); border-radius: 4px; }
+.sim-cpu button { cursor: pointer; padding: .3rem .7rem; margin: .25rem .3rem .25rem 0; border: 1px solid var(--md-primary-fg-color); border-radius: 4px;
+  background: none; color: var(--md-primary-fg-color); font: inherit; }
+.sim-cpu button.sim-calc { background: var(--md-primary-fg-color); color: #fff; }
+.sim-cpu .sim-ctrl > div { margin: .3rem 0; }
+.sim-cpu .sim-error { color: #e53935; font-weight: 600; }
+.sim-cpu .s-del { padding: .1rem .45rem; margin: 0; }

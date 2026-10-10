@@ -1,0 +1,64 @@
+site_name: Procesos y planificación de la CPU · Apuntes
+site_description: "Apuntes y ejercicios de procesos y planificación de la CPU: estados, FCFS, SJF, prioridad, HRN, Round Robin y SRT, con simulador."
+site_url: https://apuntes-dam.github.io/procesos-apuntes/
+repo_url: https://github.com/apuntes-dam/procesos-apuntes
+repo_name: GitHub
+theme:
+  name: material
+  custom_dir: overrides
+  language: es
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  palette:
+    - scheme: slate
+      primary: custom
+      toggle:
+        icon: material/weather-night
+        name: Cambiar a modo claro
+    - scheme: default
+      primary: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Cambiar a modo oscuro
+  features:
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+extra_css:
+  - assets/extra.css
+  - assets/lenguajes.css?v=499d1441
+extra_javascript:
+  - assets/simulador.js
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/apuntes-dam/
+      name: Síguenos en GitHub
+copyright: Practica los Lenguajes de Programación para 1º DAM y 2º DAM · <a href="https://github.com/apuntes-dam/">Síguenos en GitHub</a>
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+nav:
+  - Inicio: index.md
+  - "U1 · Procesos":
+      - u01/index.md
+      - "1.1 Qué es un proceso": u01/01-proceso.md
+      - "1.2 Estados y transiciones": u01/02-estados.md
+      - "1.3 Planificador, despachador y sincronización": u01/03-planificador.md
+      - "P1 Ejercicios": u01/ejercicios.md
+  - "U2 · Planificación de la CPU":
+      - u02/index.md
+      - "2.1 Cómo se calcula": u02/01-calculos.md
+      - "2.2 No apropiativos": u02/02-no-apropiativos.md
+      - "2.3 Apropiativos": u02/03-apropiativos.md
+      - "2.4 Comparar los algoritmos": u02/04-comparar.md
+      - "2.5 Simulador": u02/05-simulador.md
+      - "P2 Ejercicios": u02/ejercicios.md
+  - Chuleta: chuleta.md
