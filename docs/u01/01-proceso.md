@@ -47,6 +47,9 @@ Cada proceso tiene su **PID**, y el sistema sabe si el hijo sigue vivo (`poll()`
 !!! tip "Verlo en tu equipo (sin ejecutar aquí)"
     En Windows, el **Administrador de tareas** (`Ctrl+Mayús+Esc`) muestra los procesos con su PID, y en PowerShell, `Get-Process` los lista y `Stop-Process -Id <PID>` detiene uno. En Linux y macOS, `ps` y `kill <PID>`. Estos comandos se explican con más detalle en la asignatura de Sistemas Informáticos.
 
+!!! tip "Crear y controlar procesos desde un programa"
+    En Java se hace con `ProcessBuilder`, `Process` y `ProcessHandle`: lanzar otro programa, leer su salida, enviarle datos, ponerle un límite de tiempo y detenerlo. Está en la unidad [A6 · Procesos desde Java](https://apuntes-dam.github.io/java-apuntes/avanzado/a6/) de la web de Java (aparece al activar el interruptor **Avanzado** de la cabecera).
+
 ## Qué recordar
 
 * Programa = archivo con instrucciones; **proceso = programa en ejecución**.
