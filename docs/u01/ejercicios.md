@@ -53,3 +53,33 @@ Responde con tus palabras. Las soluciones modelo están bloqueadas: intenta prim
 <div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>La sección crítica es la parte de un programa en la que se accede a datos compartidos con otros procesos.
 ... (resto de la solución bloqueado)</code></pre></div>
 </details>
+
+## Ejercicio P1.6
+
+**Huérfano, zombi o ninguno.** Indica qué ocurre en cada caso y por qué: (a) el padre termina mientras el hijo sigue trabajando; (b) el hijo termina y el padre sigue ejecutándose sin recoger su código de salida; (c) un proceso espera un dato de la red que nunca llega; (d) el padre espera al hijo y recoge su código de salida cuando termina.
+
+<details class="sol" data-key="procesos/u01/P1.6">
+<summary>Solución modelo (bloqueada)</summary>
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>(a) Proceso HUÉRFANO: el padre termina antes que el hijo. El hijo sigue funcionando y el sistema lo adopta (pasa a ser hijo del proceso con PID 1). No es un error.
+... (resto de la solución bloqueado)</code></pre></div>
+</details>
+
+## Ejercicio P1.7
+
+**Proceso o hilo.** Para cada caso, di si usarías **procesos** o **hilos** y por qué: (a) un navegador que quiere que, si una pestaña se cuelga, no caiga el resto; (b) un editor que revisa la ortografía mientras escribes y comparte el documento en memoria; (c) un programa que necesita ejecutar otro programa distinto. Después indica en qué **zona de la memoria** de un proceso se guarda cada cosa: una variable local de una función, una lista creada mientras se ejecuta y una variable global.
+
+<details class="sol" data-key="procesos/u01/P1.7">
+<summary>Solución modelo (bloqueada)</summary>
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>(a) PROCESOS: la memoria de cada proceso está aislada, así que un fallo en una pestaña no afecta a las demás.
+... (resto de la solución bloqueado)</code></pre></div>
+</details>
+
+## Ejercicio P1.8
+
+**Tipos de programación y ley de Amdahl.** (1) Explica con el ejemplo de la cocina la diferencia entre programación **concurrente** y **paralela**, y di cuál de las dos necesita varios núcleos. (2) Un programa tarda **100 s** y el **60 %** de su código se puede paralelizar. Calcula la aceleración y el tiempo con **2 y 4 núcleos**, y el máximo con infinitos núcleos. (3) Indica una ventaja y un inconveniente de la programación **distribuida** frente a la paralela.
+
+<details class="sol" data-key="procesos/u01/P1.8">
+<summary>Solución modelo (bloqueada)</summary>
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>(1) Concurrente: un solo cocinero prepara una ensalada y una sopa alternando (las dos tareas están en curso, pero en cada instante hace una cosa). Paralela: dos cocineros, uno pica y otro remueve, a la vez. La paralela necesita varios núcleos; la concurrente puede hacerse con uno.
+... (resto de la solución bloqueado)</code></pre></div>
+</details>

@@ -32,6 +32,22 @@ Se rellena una tabla con una fila por proceso y, al final, las **medias** de T, 
 !!! info "¿Qué algoritmo es mejor?"
     El mejor para un conjunto de procesos es el que tiene **menor tiempo medio de servicio**, **menor tiempo medio de espera** y **mayor eficiencia** (índice de servicio medio). A veces no coinciden: por eso se comparan las tres medias.
 
+## Otra medida: el tiempo de respuesta
+
+En los programas **interactivos** importa cuánto tarda el sistema **en empezar a atender** a un proceso. Esa medida es el **tiempo de respuesta**:
+
+`R = instante en que usa la CPU por primera vez − ti`
+
+No hay que confundirlo con el tiempo de servicio **T** (hasta que **acaba**) ni con el de espera **E** (todo el tiempo que espera). Con tres procesos que llegan en el instante 0, de 8, 4 y 1 ciclos:
+
+| Proceso | Llegada | t | R con FCFS | R con Round Robin (q = 2) |
+|---|---|---|---|---|
+| P1 | 0 | 8 | 0 | 0 |
+| P2 | 0 | 4 | 8 | 2 |
+| P3 | 0 | 1 | 12 | 4 |
+
+Con FCFS, P3 (que solo necesita 1 ciclo) no empieza hasta el 12; con Round Robin empieza en el 4. **Round Robin da mejor tiempo de respuesta**, aunque no siempre mejor espera media.
+
 ## El diagrama de Gantt
 
 Es una gráfica con **el tiempo en horizontal** y **un proceso por fila**. En clase se dibuja en una hoja de cálculo con tres letras, que muestran **todo lo que le pasa a cada proceso**, no solo cuándo usa la CPU:

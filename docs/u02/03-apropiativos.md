@@ -69,6 +69,21 @@ En el instante 2 llega B (t = 1), pero a A solo le queda 1: **empatan**, y A sig
 
 Cuando llega B (prioridad 1) a la CPU está A (2): no hay expulsión. Cuando llega C (prioridad 3) A ya había terminado, y C gana a B. Con estos datos el resultado coincide con la prioridad no apropiativa; la diferencia aparece cuando llega un proceso **más prioritario mientras otro se ejecuta**.
 
+## Cambios de contexto
+
+Cada vez que la CPU pasa de un proceso a otro se produce un **cambio de contexto**: el sistema **guarda** el estado del proceso que sale en su BCP (por dónde iba, los valores de sus registros) y **carga** el del que entra. Durante ese tiempo la CPU **no hace trabajo útil**: es **sobrecarga**. Ocurre cuando se acaba el quantum, cuando el proceso se bloquea, cuando llega uno más prioritario o cuando termina.
+
+Se cuentan en el diagrama de Gantt: **cada trozo de CPU de un proceso distinto del anterior** es un cambio. Con los procesos A (llega en 0, t = 6), B (1, 3), C (2, 1) y D (3, 4):
+
+| Algoritmo | Cambios de contexto | Espera media E |
+|---|---|---|
+| FCFS | 3 | 4,75 |
+| Round Robin, q = 4 | 4 | 5,25 |
+| Round Robin, q = 2 | 7 | 5,25 |
+| Round Robin, q = 1 | 13 | 4,75 |
+
+Cuanto **más pequeño es el quantum**, más cambios de contexto y más tiempo perdido; con un quantum muy grande, Round Robin se parece a FCFS. Por eso se elige un quantum ni muy grande ni muy pequeño.
+
 ## Qué recordar
 
 * **Round Robin**: turnos de un **quantum**; el que no acaba va al final de la cola.

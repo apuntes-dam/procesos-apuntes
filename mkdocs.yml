@@ -52,6 +52,8 @@ nav:
       - "1.1 Qué es un proceso": u01/01-proceso.md
       - "1.2 Estados y transiciones": u01/02-estados.md
       - "1.3 Planificador, despachador y sincronización": u01/03-planificador.md
+      - "1.4 Hilos, servicios y procesos huérfanos o zombis": u01/04-hilos-servicios.md
+      - "1.5 Concurrencia, paralelismo y distribución": u01/05-concurrencia.md
       - "P1 Ejercicios": u01/ejercicios.md
   - "U2 · Planificación de la CPU":
       - u02/index.md
@@ -61,4 +63,5 @@ nav:
       - "2.4 Comparar los algoritmos": u02/04-comparar.md
       - "2.5 Simulador": u02/05-simulador.md
       - "P2 Ejercicios": u02/ejercicios.md
+  - Simulador de examen: simulador-examen.md
   - Chuleta: chuleta.md

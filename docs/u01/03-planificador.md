@@ -13,6 +13,9 @@ El **planificador** es la parte del sistema operativo que **asigna los recursos*
 !!! info "El despachador"
     El **despachador** es el módulo que **entrega la CPU** al proceso elegido por el planificador a corto plazo: guarda el estado del proceso que sale y carga el del que entra (lo que se llama *cambio de contexto*). El planificador **decide**; el despachador **ejecuta** esa decisión.
 
+!!! info "¿Y si se acaba la memoria RAM?"
+    Si hay más procesos de los que caben en la RAM, el sistema usa la **memoria virtual**: **mueve al disco** las partes de los procesos que se usan poco (la zona de **intercambio** o *swap*; en Windows, el archivo de paginación) y las trae de vuelta cuando hacen falta. Permite ejecutar más programas de los que caben, pero el disco es **miles de veces más lento** que la RAM: si se abusa, el sistema se pasa el tiempo moviendo datos y todo va muy lento. Esa situación se llama **hiperpaginación** (*thrashing*).
+
 ## Sincronización de procesos
 
 La **sincronización** consigue que los procesos se ejecuten **en el orden adecuado y sin interferir** entre ellos. Suele hacer falta en la **multiprogramación**, cuando varios programas necesitan usar **la misma información** (por ejemplo, las mismas variables en memoria).

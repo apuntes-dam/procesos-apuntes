@@ -7,6 +7,8 @@ Cuando ejecutas un programa, el sistema operativo crea un **proceso**. Con mucho
 1. [Qué es un proceso](01-proceso.md)
 2. [Estados y transiciones](02-estados.md)
 3. [Planificador, despachador y sincronización](03-planificador.md)
+4. [Hilos, servicios y procesos huérfanos o zombis](04-hilos-servicios.md)
+5. [Concurrencia, paralelismo y distribución](05-concurrencia.md)
 
 ## Antes de empezar: qué debes dominar
 
@@ -15,7 +17,7 @@ Cuando ejecutas un programa, el sistema operativo crea un **proceso**. Con mucho
 
 ## Ejercicios de la unidad
 
-Hay [5 ejercicios](ejercicios.md) de esta unidad.
+Hay [8 ejercicios](ejercicios.md) de esta unidad.
 
 ## Antes de pasar a los ejercicios
 

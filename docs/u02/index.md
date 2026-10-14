@@ -17,7 +17,7 @@ Hay muchos procesos preparados y una sola CPU: ¿a cuál le toca? Los **algoritm
 
 ## Ejercicios de la unidad
 
-Hay [10 ejercicios](ejercicios.md) de esta unidad, con cinco procesos cada uno.
+Hay [12 ejercicios](ejercicios.md) de esta unidad, con cinco procesos cada uno.
 
 ## Antes de pasar a los ejercicios
 

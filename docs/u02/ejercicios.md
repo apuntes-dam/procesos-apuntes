@@ -263,3 +263,39 @@ Para **cada algoritmo**: dibuja el **diagrama de Gantt** con la notación de cla
 <div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>== FCFS ==
 ... (resto de la solución bloqueado)</code></pre></div>
 </details>
+
+## Ejercicio P2.11
+
+**Tiempo de respuesta.** Para estos procesos calcula el **tiempo de respuesta** (R = instante en que usa la CPU por primera vez − llegada) de cada uno y la media con **FCFS**, **SRT** y **Round Robin (q = 2)**. Compara con el tiempo medio de espera. ¿Qué algoritmo es mejor para un programa interactivo?
+
+| Proceso | Ciclo de llegada | Ciclos de ejecución |
+|---|---|---|
+| P1 | 0 | 5 |
+| P2 | 1 | 3 |
+| P3 | 2 | 1 |
+| P4 | 3 | 2 |
+
+
+<details class="sol" data-key="procesos/u02/P2.11">
+<summary>Solución modelo (bloqueada)</summary>
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>FCFS: R = P1: 0, P2: 4, P3: 6, P4: 6  →  media 4  (E media 4)
+... (resto de la solución bloqueado)</code></pre></div>
+</details>
+
+## Ejercicio P2.12
+
+**Cambios de contexto.** Para estos procesos cuenta los **cambios de contexto** (cada vez que la CPU pasa a un proceso distinto del anterior) con **FCFS** y con **Round Robin de quantum 4, 2 y 1**, y calcula la espera media de cada uno. ¿Qué relación hay entre el quantum, los cambios de contexto y la espera? ¿Cuál elegirías?
+
+| Proceso | Ciclo de llegada | Ciclos de ejecución |
+|---|---|---|
+| P1 | 0 | 5 |
+| P2 | 1 | 3 |
+| P3 | 2 | 4 |
+| P4 | 4 | 2 |
+
+
+<details class="sol" data-key="procesos/u02/P2.12">
+<summary>Solución modelo (bloqueada)</summary>
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>FCFS: 3 cambios de contexto, E media = 4,5
+... (resto de la solución bloqueado)</code></pre></div>
+</details>

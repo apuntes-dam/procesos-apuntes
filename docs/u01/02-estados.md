@@ -68,6 +68,16 @@ Con una sola CPU, **solo un proceso puede estar en ejecución** a la vez; los de
     * De **terminado** no se vuelve a ningún estado: un proceso terminado no se reactiva.
     * Para llegar a **terminado** hay que estar **en ejecución**.
 
+## Procesos limitados por CPU y por entrada/salida
+
+Según en qué pasen la mayor parte de su vida, los procesos se clasifican en dos tipos:
+
+* **Limitados por CPU** (*CPU-bound*): pasan casi todo el tiempo **calculando**. Ejemplos: comprimir un vídeo, calcular números primos, entrenar un modelo. Van más rápido con un procesador más rápido o repartiendo el trabajo entre varios núcleos.
+* **Limitados por entrada/salida** (*I/O-bound*): pasan casi todo el tiempo **bloqueados**, esperando al disco, a la red o al usuario. Ejemplos: un editor de texto, un navegador descargando una página, un servidor esperando peticiones. Van más rápido con un disco o una red más rápidos.
+
+!!! example "Una máquina recreativa con un solo núcleo"
+    Un videojuego antiguo repite tres tareas: **leer el mando** (E/S), **calcular el mundo del juego** (CPU) y **dibujar la pantalla** (E/S). Mientras espera a que el jugador pulse un botón, la tarea de leer el mando está **bloqueada** y el núcleo se dedica a calcular. **Mezclar** tareas de CPU y de E/S aprovecha mucho mejor el procesador: es la idea de la [concurrencia](05-concurrencia.md).
+
 ## Qué recordar
 
 * Cinco estados: **inicio**, **preparado**, **en ejecución**, **bloqueado** y **terminado**; seis transiciones.
