@@ -17,7 +17,7 @@ El sistema **impide** que un proceso lea o escriba en la memoria de otro. Es una
 
 Todo proceso lo **crea otro**, su **padre**. Cada proceso guarda el PID de quien lo creó, el **PPID** (*Parent PID*), y así se forma un **árbol de procesos**. En Linux el primero que arranca es `systemd` (o `init`), con PID 1, y todos descienden de él; en Windows, la mayoría de lo que abres con doble clic cuelga de `explorer.exe`.
 
-Esta demostración crea un hijo y comprueba que su PPID es el PID del padre. Se ha ejecutado de verdad (Windows); los PID concretos no se muestran porque cambian cada vez.
+En [1.1](01-proceso.md) viste cómo se crea un hijo y se consulta su PID; ahora interesa **de quién es hijo**. Esta demostración comprueba que el PPID del hijo es el PID del padre. Se ha ejecutado de verdad (Windows); los PID concretos no se muestran porque cambian cada vez.
 
 ```python
 import multiprocessing

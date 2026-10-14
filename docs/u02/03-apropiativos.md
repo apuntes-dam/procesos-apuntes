@@ -71,7 +71,7 @@ Cuando llega B (prioridad 1) a la CPU está A (2): no hay expulsión. Cuando lle
 
 ## Cambios de contexto
 
-Cada vez que la CPU pasa de un proceso a otro se produce un **cambio de contexto**: el sistema **guarda** el estado del proceso que sale en su BCP (por dónde iba, los valores de sus registros) y **carga** el del que entra. Durante ese tiempo la CPU **no hace trabajo útil**: es **sobrecarga**. Ocurre cuando se acaba el quantum, cuando el proceso se bloquea, cuando llega uno más prioritario o cuando termina.
+El despachador de [1.3](../u01/03-planificador.md) hace un **cambio de contexto** cada vez que la CPU pasa de un proceso a otro. Aquí interesa **contarlos y ver lo que cuestan**: durante ese tiempo la CPU **no hace trabajo útil**, es **sobrecarga**. Ocurre cuando se acaba el quantum, cuando el proceso se bloquea, cuando llega uno más prioritario o cuando termina.
 
 Se cuentan en el diagrama de Gantt: **cada trozo de CPU de un proceso distinto del anterior** es un cambio. Con los procesos A (llega en 0, t = 6), B (1, 3), C (2, 1) y D (3, 4):
 
