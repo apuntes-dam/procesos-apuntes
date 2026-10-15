@@ -1,5 +1,17 @@
 # 2.4 Comparar los algoritmos
 
+<div class="narrador" data-slug="u02-04-comparar" data-voces="mujer:Mujer,hombre:Hombre,hombre2:Hombre 2" data-titulo="Resumen de la comparación"></div>
+
+??? note "Leer el resumen"
+    Con los mismos procesos, los algoritmos dan resultados distintos, y no hay uno que sea el mejor en todo.
+    FCFS es el más sencillo: atiende por orden de llegada. Pero un proceso muy largo hace esperar a todos los demás.
+    SJF y SRT consiguen la menor espera media, porque ejecutan antes lo corto. Su problema es la inanición: un proceso largo puede quedarse sin ejecutarse nunca. Además, hay que saber de antemano cuánto va a durar cada proceso.
+    HRN corrige eso. Parece a SJF, pero cuanto más espera un proceso, más prioridad gana, así que nadie se queda esperando para siempre.
+    Round Robin reparte la CPU por turnos iguales. Es bueno para sistemas interactivos, pero si el quantum es muy pequeño se pierde tiempo cambiando de proceso, y las medias salen más altas.
+    Y la prioridad permite favorecer lo importante, aunque los procesos de baja prioridad también pueden sufrir inanición.
+    Recuerda: con otros procesos, el orden puede cambiar. Prueba con tus propios datos en el simulador.
+
+
 Con los mismos cuatro procesos (A, B, C y D de [2.1](01-calculos.md)), estas son las tres medias de cada algoritmo, calculadas por el programa:
 
 | Algoritmo | Tiempo medio de servicio (T) | Tiempo medio de espera (E) | Índice de servicio medio (I) |

@@ -1,5 +1,17 @@
 # 1.2 Estados y transiciones
 
+<div class="narrador" data-slug="u01-02-estados" data-voces="mujer:Mujer,hombre:Hombre,hombre2:Hombre 2" data-titulo="Resumen de los estados"></div>
+
+??? note "Leer el resumen"
+    Un proceso pasa por varios estados a lo largo de su vida. Nace en el estado de inicio, donde el sistema prepara su ficha y le da memoria, pero todavía no compite por la CPU.
+    Cuando el sistema lo admite, pasa a preparado. Está listo para ejecutarse y solo espera su turno.
+    Cuando el planificador le da la CPU, pasa a en ejecución. Con una sola CPU, solo un proceso puede estar aquí a la vez.
+    Si necesita algo que aún no tiene, por ejemplo un dato de un disco, pasa a bloqueado. Y cuando ese dato llega, no vuelve directo a ejecutarse, vuelve a preparado y espera otra vez su turno.
+    Si el planificador decide quitarle la CPU para dársela a otro, el proceso vuelve de ejecución a preparado, aunque no haya terminado.
+    Y al acabar, pasa a terminado, y el sistema libera sus recursos.
+    En clase se usan los tres estados principales: ejecución, preparado y bloqueado, con sus cuatro transiciones. Si los entiendes, entiendes lo que necesitan los algoritmos de la unidad dos.
+
+
 El **estado** de un proceso indica en qué situación está. Un proceso no está siempre trabajando: a veces espera su turno, a veces espera algo que todavía no ha llegado, y al final de su vida desaparece del sistema.
 
 ## Los cinco estados
