@@ -24,6 +24,7 @@ theme:
     - navigation.indexes
     - navigation.top
     - content.code.copy
+    - content.tabs.link
     - search.highlight
 extra_css:
   - assets/extra.css
@@ -46,6 +47,8 @@ markdown_extensions:
       permalink: true
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.details
 nav:
   - Inicio: index.md
