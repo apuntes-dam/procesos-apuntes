@@ -19,94 +19,342 @@ Todo proceso lo **crea otro**, su **padre**. Cada proceso guarda el PID de quien
 
 En [1.1](01-proceso.md) viste cómo se crea un hijo y se consulta su PID; ahora interesa **de quién es hijo**. Esta demostración comprueba que el PPID del hijo es el PID del padre. Se ha ejecutado de verdad (Windows); los PID concretos no se muestran porque cambian cada vez.
 
-!!! info "Elige el lenguaje"
-    Las demostraciones de esta página tienen **pestañas**: **Java** es la que se ve por defecto, y también hay **Kotlin**, **Python** y **C#** cuando se puede hacer. La que elijas se recuerda en toda la página. Cada versión se ha **compilado y ejecutado de verdad** y cada pestaña enseña su propia salida. Faltan lenguajes donde no se puede: C# no da el PID del padre de forma directa y Dart trabaja con *isolates*, que **no comparten memoria**, así que no hay un «hilo con memoria compartida» que enseñar.
+!!! info "Elige el lenguaje y la forma"
+    Las demostraciones de esta página funcionan como las pestañas de una carpeta: **Java** es la que se ve por defecto; pulsa **+** para abrir **Kotlin**, **Python** o **C#** (cuando se puede hacer) y **×** para cerrar una pestaña. A la derecha eliges si quieres verla **como función** (funciones sueltas) o **como clase** (la misma lógica dentro de una clase). Tu elección se recuerda en toda la web. Cada versión se ha **compilado y ejecutado de verdad** y enseña su propia salida. **Dart** no tiene pestaña porque trabaja con *isolates*, que **no comparten memoria**: no hay un «hilo con memoria compartida» que enseñar. En **C#** el PID del padre no se pide con una sola llamada (en Windows se le pregunta al sistema con `NtQueryInformationProcess`), por eso su código es algo más largo.
 
-=== "Java"
+<div class="pg" data-pg="ppid" markdown="1">
 
-    ```java
-    public class Main {
-        public static void main(String[] args) throws Exception {
-            if (args.length > 0 && args[0].equals("hijo")) {          // este código lo ejecuta el proceso hijo
-                long pidPadre = Long.parseLong(args[1]);
-                long miPpid = ProcessHandle.current().parent().map(ProcessHandle::pid).orElse(-1L);
-                System.out.println("   Hijo: mi PID es distinto del del padre: " + (ProcessHandle.current().pid() != pidPadre));
-                System.out.println("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: " + (miPpid == pidPadre));
-                return;
-            }
-            long miPid = ProcessHandle.current().pid();
-            String java = ProcessHandle.current().info().command().orElse("java");
-            Process hijo = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "Main", "hijo", String.valueOf(miPid))
-                    .inheritIO().start();
-            int codigo = hijo.waitFor();
-            System.out.println("El padre sabe que el hijo terminó con código: " + codigo);
-        }
+<div class="pg-panel" data-lang="java" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Java · como función</p>
+
+```java
+public class Main {
+    static void hijo(long pidPadre) {                          // lo ejecuta el proceso hijo
+        long miPpid = ProcessHandle.current().parent().map(ProcessHandle::pid).orElse(-1L);
+        System.out.println("   Hijo: mi PID es distinto del del padre: " + (ProcessHandle.current().pid() != pidPadre));
+        System.out.println("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: " + (miPpid == pidPadre));
     }
-    ```
 
-    **Salida:**
+    static void padre() throws Exception {
+        long miPid = ProcessHandle.current().pid();
+        String java = ProcessHandle.current().info().command().orElse("java");
+        Process proceso = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "Main", "hijo", String.valueOf(miPid))
+                .inheritIO().start();
+        int codigo = proceso.waitFor();
+        System.out.println("El padre sabe que el hijo terminó con código: " + codigo);
+    }
 
-    ```text
-       Hijo: mi PID es distinto del del padre: true
-       Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: true
-    El padre sabe que el hijo terminó con código: 0
-    ```
+    public static void main(String[] args) throws Exception {
+        if (args.length > 0 && args[0].equals("hijo")) hijo(Long.parseLong(args[1]));
+        else padre();
+    }
+}
+```
 
-=== "Kotlin"
+**Salida:**
 
-    ```kotlin
-    fun main(args: Array<String>) {
-        if (args.isNotEmpty() && args[0] == "hijo") {                 // este código lo ejecuta el proceso hijo
-            val pidPadre = args[1].toLong()
-            val miPpid = ProcessHandle.current().parent().map { it.pid() }.orElse(-1L)
-            println("   Hijo: mi PID es distinto del del padre: ${ProcessHandle.current().pid() != pidPadre}")
-            println("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: ${miPpid == pidPadre}")
-            return
-        }
+```text
+   Hijo: mi PID es distinto del del padre: true
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: true
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+<div class="pg-panel" data-lang="java" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Java · como clase</p>
+
+```java
+public class Demo {
+    void hijo(long pidPadre) {                                 // lo ejecuta el proceso hijo
+        long miPpid = ProcessHandle.current().parent().map(ProcessHandle::pid).orElse(-1L);
+        System.out.println("   Hijo: mi PID es distinto del del padre: " + (ProcessHandle.current().pid() != pidPadre));
+        System.out.println("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: " + (miPpid == pidPadre));
+    }
+
+    void padre() throws Exception {
+        long miPid = ProcessHandle.current().pid();
+        String java = ProcessHandle.current().info().command().orElse("java");
+        Process proceso = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "Demo", "hijo", String.valueOf(miPid))
+                .inheritIO().start();
+        int codigo = proceso.waitFor();
+        System.out.println("El padre sabe que el hijo terminó con código: " + codigo);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Demo demo = new Demo();
+        if (args.length > 0 && args[0].equals("hijo")) demo.hijo(Long.parseLong(args[1]));
+        else demo.padre();
+    }
+}
+```
+
+**Salida:**
+
+```text
+   Hijo: mi PID es distinto del del padre: true
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: true
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Kotlin · como función</p>
+
+```kotlin
+fun hijo(pidPadre: Long) {                                     // lo ejecuta el proceso hijo
+    val miPpid = ProcessHandle.current().parent().map { it.pid() }.orElse(-1L)
+    println("   Hijo: mi PID es distinto del del padre: ${ProcessHandle.current().pid() != pidPadre}")
+    println("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: ${miPpid == pidPadre}")
+}
+
+fun padre() {
+    val miPid = ProcessHandle.current().pid()
+    val java = ProcessHandle.current().info().command().orElse("java")
+    val proceso = ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "MainKt", "hijo", miPid.toString())
+        .inheritIO().start()
+    val codigo = proceso.waitFor()
+    println("El padre sabe que el hijo terminó con código: $codigo")
+}
+
+fun main(args: Array<String>) {
+    if (args.firstOrNull() == "hijo") hijo(args[1].toLong()) else padre()
+}
+```
+
+**Salida:**
+
+```text
+   Hijo: mi PID es distinto del del padre: true
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: true
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Kotlin · como clase</p>
+
+```kotlin
+class Demo {
+    fun hijo(pidPadre: Long) {                                 // lo ejecuta el proceso hijo
+        val miPpid = ProcessHandle.current().parent().map { it.pid() }.orElse(-1L)
+        println("   Hijo: mi PID es distinto del del padre: ${ProcessHandle.current().pid() != pidPadre}")
+        println("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: ${miPpid == pidPadre}")
+    }
+
+    fun padre() {
         val miPid = ProcessHandle.current().pid()
         val java = ProcessHandle.current().info().command().orElse("java")
-        val hijo = ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "MainKt", "hijo", miPid.toString())
+        val proceso = ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "MainKt", "hijo", miPid.toString())
             .inheritIO().start()
-        val codigo = hijo.waitFor()
+        val codigo = proceso.waitFor()
         println("El padre sabe que el hijo terminó con código: $codigo")
     }
-    ```
+}
 
-    **Salida:**
+fun main(args: Array<String>) {
+    val demo = Demo()
+    if (args.firstOrNull() == "hijo") demo.hijo(args[1].toLong()) else demo.padre()
+}
+```
 
-    ```text
-       Hijo: mi PID es distinto del del padre: true
-       Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: true
-    El padre sabe que el hijo terminó con código: 0
-    ```
+**Salida:**
 
-=== "Python"
+```text
+   Hijo: mi PID es distinto del del padre: true
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: true
+El padre sabe que el hijo terminó con código: 0
+```
 
-    ```python
-    import multiprocessing
-    import os
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Python · como función</p>
+
+```python
+import multiprocessing
+import os
 
 
-    def hijo(pid_padre):
+def hijo(pid_padre):
+    print("   Hijo: mi PID es distinto del del padre:", os.getpid() != pid_padre)
+    print("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre:", os.getppid() == pid_padre)
+
+
+if __name__ == "__main__":
+    proceso = multiprocessing.Process(target=hijo, args=(os.getpid(),))
+    proceso.start()
+    proceso.join()
+    print("El padre sabe que el hijo terminó con código:", proceso.exitcode)
+```
+
+**Salida:**
+
+```text
+   Hijo: mi PID es distinto del del padre: True
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: True
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Python · como clase</p>
+
+```python
+import multiprocessing
+import os
+
+
+class Demo:
+    @staticmethod
+    def hijo(pid_padre):                                       # lo ejecuta el proceso hijo
         print("   Hijo: mi PID es distinto del del padre:", os.getpid() != pid_padre)
         print("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre:", os.getppid() == pid_padre)
 
-
-    if __name__ == "__main__":
-        proceso = multiprocessing.Process(target=hijo, args=(os.getpid(),))
+    @staticmethod
+    def padre():
+        proceso = multiprocessing.Process(target=Demo.hijo, args=(os.getpid(),))
         proceso.start()
         proceso.join()
         print("El padre sabe que el hijo terminó con código:", proceso.exitcode)
-    ```
 
-    **Salida:**
 
-    ```text
-       Hijo: mi PID es distinto del del padre: True
-       Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: True
-    El padre sabe que el hijo terminó con código: 0
-    ```
+if __name__ == "__main__":
+    Demo.padre()
+```
 
+**Salida:**
+
+```text
+   Hijo: mi PID es distinto del del padre: True
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: True
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">C# · como función</p>
+
+```csharp
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;   // para que la consola muestre las tildes
+
+// .NET no ofrece el PID del padre: en Windows se le pregunta al sistema (en Linux se leería /proc/self/stat)
+[DllImport("ntdll.dll")]
+static extern int NtQueryInformationProcess(IntPtr proceso, int clase, ref InfoProceso info, int tamano, out int devuelto);
+
+int PidDelPadre()
+{
+    var info = new InfoProceso();
+    NtQueryInformationProcess(Process.GetCurrentProcess().Handle, 0, ref info, Marshal.SizeOf(info), out _);
+    return (int)info.PidDelPadre;
+}
+
+void Hijo(int pidPadre)                                    // lo ejecuta el proceso hijo
+{
+    Console.WriteLine("   Hijo: mi PID es distinto del del padre: " + (Environment.ProcessId != pidPadre));
+    Console.WriteLine("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: " + (PidDelPadre() == pidPadre));
+}
+
+void Padre()
+{
+    var proceso = Process.Start(Environment.ProcessPath!, new[] { "hijo", Environment.ProcessId.ToString() })!;
+    proceso.WaitForExit();
+    Console.WriteLine("El padre sabe que el hijo terminó con código: " + proceso.ExitCode);
+}
+
+if (args.Length > 0 && args[0] == "hijo") Hijo(int.Parse(args[1]));
+else Padre();
+
+[StructLayout(LayoutKind.Sequential)]
+struct InfoProceso
+{
+    public IntPtr Estado, Peb, Afinidad, Prioridad, Pid, PidDelPadre;
+}
+```
+
+**Salida:**
+
+```text
+   Hijo: mi PID es distinto del del padre: True
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: True
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="clase" markdown="1">
+
+<p class="pg-cab">C# · como clase</p>
+
+```csharp
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;   // para que la consola muestre las tildes
+
+var demo = new Demo();
+if (args.Length > 0 && args[0] == "hijo") demo.Hijo(int.Parse(args[1]));
+else demo.Padre();
+
+class Demo
+{
+    // .NET no ofrece el PID del padre: en Windows se le pregunta al sistema (en Linux se leería /proc/self/stat)
+    [DllImport("ntdll.dll")]
+    static extern int NtQueryInformationProcess(IntPtr proceso, int clase, ref InfoProceso info, int tamano, out int devuelto);
+
+    static int PidDelPadre()
+    {
+        var info = new InfoProceso();
+        NtQueryInformationProcess(Process.GetCurrentProcess().Handle, 0, ref info, Marshal.SizeOf(info), out _);
+        return (int)info.PidDelPadre;
+    }
+
+    public void Hijo(int pidPadre)                         // lo ejecuta el proceso hijo
+    {
+        Console.WriteLine("   Hijo: mi PID es distinto del del padre: " + (Environment.ProcessId != pidPadre));
+        Console.WriteLine("   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: " + (PidDelPadre() == pidPadre));
+    }
+
+    public void Padre()
+    {
+        var proceso = Process.Start(Environment.ProcessPath!, new[] { "hijo", Environment.ProcessId.ToString() })!;
+        proceso.WaitForExit();
+        Console.WriteLine("El padre sabe que el hijo terminó con código: " + proceso.ExitCode);
+    }
+}
+
+[StructLayout(LayoutKind.Sequential)]
+struct InfoProceso
+{
+    public IntPtr Estado, Peb, Afinidad, Prioridad, Pid, PidDelPadre;
+}
+```
+
+**Salida:**
+
+```text
+   Hijo: mi PID es distinto del del padre: True
+   Hijo: mi PPID (el PID de mi padre) coincide con el PID del padre: True
+El padre sabe que el hijo terminó con código: 0
+```
+
+</div>
+
+</div>
 
 !!! tip "Verlo en tu equipo (sin ejecutar aquí)"
     En Windows, el **Administrador de tareas**, en la pestaña *Detalles*, muestra el PID; el PPID se ve con `Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, Name` en PowerShell. En Linux, `ps -ef` muestra PID y PPID, y `pstree` dibuja el árbol.
@@ -124,56 +372,158 @@ Un **hilo** (*thread*) es un **flujo de ejecución dentro de un proceso**. Todo 
 
 Esta demostración lo enseña con una lista compartida: un **hilo** la modifica y se nota; un **proceso hijo** la modifica y el padre **no se entera**, porque tiene su propia copia en su propia memoria.
 
-=== "Java"
+<div class="pg" data-pg="memoria" markdown="1">
 
-    ```java
-    import java.util.ArrayList;
-    import java.util.List;
+<div class="pg-panel" data-lang="java" data-forma="funcion" markdown="1">
 
-    public class Main {
-        static List<String> datos = new ArrayList<>();
+<p class="pg-cab">Java · como función</p>
 
-        public static void main(String[] args) throws Exception {
-            if (args.length > 0 && args[0].equals("hijo")) {          // este código lo ejecuta el proceso hijo
-                datos.add("lo añade el proceso hijo");
-                System.out.println("   Dentro del proceso hijo, datos = " + datos);
-                return;
-            }
-            Thread hilo = new Thread(() -> datos.add("lo añade el hilo"));
-            hilo.start();
-            hilo.join();
-            System.out.println("Después del hilo:     " + datos);
+```java
+import java.util.ArrayList;
+import java.util.List;
 
-            String java = ProcessHandle.current().info().command().orElse("java");
-            Process hijo = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "Main", "hijo")
-                    .inheritIO().start();
-            hijo.waitFor();
-            System.out.println("Después del proceso:  " + datos);
-        }
+public class Main {
+    static List<String> datos = new ArrayList<>();
+
+    static void tareaHijo() {                                  // lo ejecuta el proceso hijo
+        datos.add("lo añade el proceso hijo");
+        System.out.println("   Dentro del proceso hijo, datos = " + datos);
     }
-    ```
 
-    **Salida:**
+    static void demostracion() throws Exception {
+        Thread hilo = new Thread(() -> datos.add("lo añade el hilo"));
+        hilo.start();
+        hilo.join();
+        System.out.println("Después del hilo:     " + datos);
 
-    ```text
-    Después del hilo:     [lo añade el hilo]
-       Dentro del proceso hijo, datos = [lo añade el proceso hijo]
-    Después del proceso:  [lo añade el hilo]
-    ```
+        String java = ProcessHandle.current().info().command().orElse("java");
+        Process hijo = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "Main", "hijo")
+                .inheritIO().start();
+        hijo.waitFor();
+        System.out.println("Después del proceso:  " + datos);
+    }
 
-=== "Kotlin"
+    public static void main(String[] args) throws Exception {
+        if (args.length > 0 && args[0].equals("hijo")) tareaHijo();
+        else demostracion();
+    }
+}
+```
 
-    ```kotlin
-    import kotlin.concurrent.thread
+**Salida:**
 
-    val datos = mutableListOf<String>()
+```text
+Después del hilo:     [lo añade el hilo]
+   Dentro del proceso hijo, datos = [lo añade el proceso hijo]
+Después del proceso:  [lo añade el hilo]
+```
 
-    fun main(args: Array<String>) {
-        if (args.isNotEmpty() && args[0] == "hijo") {                 // este código lo ejecuta el proceso hijo
-            datos.add("lo añade el proceso hijo")
-            println("   Dentro del proceso hijo, datos = $datos")
-            return
-        }
+</div>
+
+<div class="pg-panel" data-lang="java" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Java · como clase</p>
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Demo {
+    private final List<String> datos = new ArrayList<>();      // el estado vive en el objeto
+
+    void tareaHijo() {                                         // lo ejecuta el proceso hijo
+        datos.add("lo añade el proceso hijo");
+        System.out.println("   Dentro del proceso hijo, datos = " + datos);
+    }
+
+    void ejecutar() throws Exception {
+        Thread hilo = new Thread(() -> datos.add("lo añade el hilo"));
+        hilo.start();
+        hilo.join();
+        System.out.println("Después del hilo:     " + datos);
+
+        String java = ProcessHandle.current().info().command().orElse("java");
+        Process hijo = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "Demo", "hijo")
+                .inheritIO().start();
+        hijo.waitFor();
+        System.out.println("Después del proceso:  " + datos);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Demo demo = new Demo();
+        if (args.length > 0 && args[0].equals("hijo")) demo.tareaHijo();
+        else demo.ejecutar();
+    }
+}
+```
+
+**Salida:**
+
+```text
+Después del hilo:     [lo añade el hilo]
+   Dentro del proceso hijo, datos = [lo añade el proceso hijo]
+Después del proceso:  [lo añade el hilo]
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Kotlin · como función</p>
+
+```kotlin
+import kotlin.concurrent.thread
+
+val datos = mutableListOf<String>()
+
+fun tareaHijo() {                                              // lo ejecuta el proceso hijo
+    datos.add("lo añade el proceso hijo")
+    println("   Dentro del proceso hijo, datos = $datos")
+}
+
+fun demostracion() {
+    val hilo = thread { datos.add("lo añade el hilo") }
+    hilo.join()
+    println("Después del hilo:     $datos")
+
+    val java = ProcessHandle.current().info().command().orElse("java")
+    val hijo = ProcessBuilder(java, "-cp", System.getProperty("java.class.path"), "MainKt", "hijo")
+        .inheritIO().start()
+    hijo.waitFor()
+    println("Después del proceso:  $datos")
+}
+
+fun main(args: Array<String>) {
+    if (args.firstOrNull() == "hijo") tareaHijo() else demostracion()
+}
+```
+
+**Salida:**
+
+```text
+Después del hilo:     [lo añade el hilo]
+   Dentro del proceso hijo, datos = [lo añade el proceso hijo]
+Después del proceso:  [lo añade el hilo]
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Kotlin · como clase</p>
+
+```kotlin
+import kotlin.concurrent.thread
+
+class Demo {
+    private val datos = mutableListOf<String>()                // el estado vive en el objeto
+
+    fun tareaHijo() {                                          // lo ejecuta el proceso hijo
+        datos.add("lo añade el proceso hijo")
+        println("   Dentro del proceso hijo, datos = $datos")
+    }
+
+    fun ejecutar() {
         val hilo = thread { datos.add("lo añade el hilo") }
         hilo.join()
         println("Después del hilo:     $datos")
@@ -184,89 +534,205 @@ Esta demostración lo enseña con una lista compartida: un **hilo** la modifica 
         hijo.waitFor()
         println("Después del proceso:  $datos")
     }
-    ```
+}
 
-    **Salida:**
+fun main(args: Array<String>) {
+    val demo = Demo()
+    if (args.firstOrNull() == "hijo") demo.tareaHijo() else demo.ejecutar()
+}
+```
 
-    ```text
-    Después del hilo:     [lo añade el hilo]
-       Dentro del proceso hijo, datos = [lo añade el proceso hijo]
-    Después del proceso:  [lo añade el hilo]
-    ```
+**Salida:**
 
-=== "Python"
+```text
+Después del hilo:     [lo añade el hilo]
+   Dentro del proceso hijo, datos = [lo añade el proceso hijo]
+Después del proceso:  [lo añade el hilo]
+```
 
-    ```python
-    import multiprocessing
-    import threading
+</div>
 
-    datos = []
+<div class="pg-panel" data-lang="python" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Python · como función</p>
+
+```python
+import multiprocessing
+import threading
+
+datos = []
 
 
+def tarea_hilo():
+    datos.append("lo añade el hilo")
+
+
+def tarea_proceso():
+    datos.append("lo añade el proceso hijo")
+    print("   Dentro del proceso hijo, datos =", datos)
+
+
+if __name__ == "__main__":
+    t = threading.Thread(target=tarea_hilo)
+    t.start()
+    t.join()
+    print("Después del hilo:    ", datos)
+
+    p = multiprocessing.Process(target=tarea_proceso)
+    p.start()
+    p.join()
+    print("Después del proceso: ", datos)
+```
+
+**Salida:**
+
+```text
+   Dentro del proceso hijo, datos = ['lo añade el proceso hijo']
+Después del hilo:     ['lo añade el hilo']
+Después del proceso:  ['lo añade el hilo']
+```
+
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Python · como clase</p>
+
+```python
+import multiprocessing
+import threading
+
+
+class Demo:
+    datos = []                                                 # atributo de clase: el estado del proceso
+
+    @staticmethod
     def tarea_hilo():
-        datos.append("lo añade el hilo")
+        Demo.datos.append("lo añade el hilo")
 
-
+    @staticmethod
     def tarea_proceso():
-        datos.append("lo añade el proceso hijo")
-        print("   Dentro del proceso hijo, datos =", datos)
+        Demo.datos.append("lo añade el proceso hijo")
+        print("   Dentro del proceso hijo, datos =", Demo.datos)
 
-
-    if __name__ == "__main__":
-        t = threading.Thread(target=tarea_hilo)
+    @staticmethod
+    def ejecutar():
+        t = threading.Thread(target=Demo.tarea_hilo)
         t.start()
         t.join()
-        print("Después del hilo:    ", datos)
+        print("Después del hilo:    ", Demo.datos)
 
-        p = multiprocessing.Process(target=tarea_proceso)
+        p = multiprocessing.Process(target=Demo.tarea_proceso)
         p.start()
         p.join()
-        print("Después del proceso: ", datos)
-    ```
+        print("Después del proceso: ", Demo.datos)
 
-    **Salida:**
 
-    ```text
-       Dentro del proceso hijo, datos = ['lo añade el proceso hijo']
-    Después del hilo:     ['lo añade el hilo']
-    Después del proceso:  ['lo añade el hilo']
-    ```
+if __name__ == "__main__":
+    Demo.ejecutar()
+```
 
-=== "C#"
+**Salida:**
 
-    ```csharp
-    using System.Diagnostics;
+```text
+   Dentro del proceso hijo, datos = ['lo añade el proceso hijo']
+Después del hilo:     ['lo añade el hilo']
+Después del proceso:  ['lo añade el hilo']
+```
 
-    Console.OutputEncoding = System.Text.Encoding.UTF8;   // para que la consola muestre las tildes
+</div>
 
-    var datos = new List<string>();
+<div class="pg-panel" data-lang="csharp" data-forma="funcion" markdown="1">
 
-    if (args.Length > 0 && args[0] == "hijo")                  // este código lo ejecuta el proceso hijo
-    {
-        datos.Add("lo añade el proceso hijo");
-        Console.WriteLine("   Dentro del proceso hijo, datos = [" + string.Join(", ", datos) + "]");
-        return;
-    }
+<p class="pg-cab">C# · como función</p>
 
+```csharp
+using System.Diagnostics;
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;   // para que la consola muestre las tildes
+
+var datos = new List<string>();
+
+void TareaHijo()                                           // lo ejecuta el proceso hijo
+{
+    datos.Add("lo añade el proceso hijo");
+    Console.WriteLine("   Dentro del proceso hijo, datos = [" + string.Join(", ", datos) + "]");
+}
+
+void Demostracion()
+{
     var hilo = new Thread(() => datos.Add("lo añade el hilo"));
     hilo.Start();
     hilo.Join();
     Console.WriteLine("Después del hilo:     [" + string.Join(", ", datos) + "]");
 
-    var fuente = (string)AppContext.GetData("EntryPointFilePath")!;
-    var hijo = Process.Start("dotnet", new[] { "run", fuente, "--", "hijo" })!;
+    var hijo = Process.Start(Environment.ProcessPath!, new[] { "hijo" })!;      // el mismo programa, como proceso nuevo
     hijo.WaitForExit();
     Console.WriteLine("Después del proceso:  [" + string.Join(", ", datos) + "]");
-    ```
+}
 
-    **Salida:**
+if (args.Length > 0 && args[0] == "hijo") TareaHijo();
+else Demostracion();
+```
 
-    ```text
-    Después del hilo:     [lo añade el hilo]
-       Dentro del proceso hijo, datos = [lo añade el proceso hijo]
-    Después del proceso:  [lo añade el hilo]
-    ```
+**Salida:**
 
+```text
+Después del hilo:     [lo añade el hilo]
+   Dentro del proceso hijo, datos = [lo añade el proceso hijo]
+Después del proceso:  [lo añade el hilo]
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="clase" markdown="1">
+
+<p class="pg-cab">C# · como clase</p>
+
+```csharp
+using System.Diagnostics;
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;   // para que la consola muestre las tildes
+
+var demo = new Demo();
+if (args.Length > 0 && args[0] == "hijo") demo.TareaHijo();
+else demo.Ejecutar();
+
+class Demo
+{
+    private readonly List<string> datos = new();           // el estado vive en el objeto
+
+    public void TareaHijo()                                // lo ejecuta el proceso hijo
+    {
+        datos.Add("lo añade el proceso hijo");
+        Console.WriteLine("   Dentro del proceso hijo, datos = [" + string.Join(", ", datos) + "]");
+    }
+
+    public void Ejecutar()
+    {
+        var hilo = new Thread(() => datos.Add("lo añade el hilo"));
+        hilo.Start();
+        hilo.Join();
+        Console.WriteLine("Después del hilo:     [" + string.Join(", ", datos) + "]");
+
+        var hijo = Process.Start(Environment.ProcessPath!, new[] { "hijo" })!;      // el mismo programa, como proceso nuevo
+        hijo.WaitForExit();
+        Console.WriteLine("Después del proceso:  [" + string.Join(", ", datos) + "]");
+    }
+}
+```
+
+**Salida:**
+
+```text
+Después del hilo:     [lo añade el hilo]
+   Dentro del proceso hijo, datos = [lo añade el proceso hijo]
+Después del proceso:  [lo añade el hilo]
+```
+
+</div>
+
+</div>
 
 El hilo añadió su texto a la **misma** lista que ve el programa principal. El proceso hijo añadió el suyo a **otra** lista (en Windows el hijo ni siquiera hereda la lista del padre; en Linux partiría de una **copia**): en los dos casos, el padre no ve el cambio.
 
