@@ -2,7 +2,7 @@
 
 🌐 **Web: https://apuntes-dam.github.io/procesos-apuntes/**
 
-Apuntes y ejercicios de procesos y planificación de la CPU: estados, FCFS, SJF, prioridad, HRN, Round Robin y SRT, con simulador.
+Apuntes y ejercicios de procesos y planificación de la CPU: estados, FCFS, SJF, prioridad, HRN, Round Robin y SRT, con simulador, y cómo crear y controlar procesos desde el código.
 
 Forma parte de [Practica los Lenguajes de Programación para 1º DAM y 2º DAM](https://apuntes-dam.github.io/apuntes-lenguajes/).
 

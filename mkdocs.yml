@@ -1,5 +1,5 @@
 site_name: Procesos y planificación de la CPU · Apuntes
-site_description: "Apuntes y ejercicios de procesos y planificación de la CPU: estados, FCFS, SJF, prioridad, HRN, Round Robin y SRT, con simulador."
+site_description: "Apuntes y ejercicios de procesos y planificación de la CPU: estados, FCFS, SJF, prioridad, HRN, Round Robin y SRT, con simulador, y cómo crear y controlar procesos desde el código."
 site_url: https://apuntes-dam.github.io/procesos-apuntes/
 repo_url: https://github.com/apuntes-dam/procesos-apuntes
 repo_name: GitHub
@@ -66,5 +66,13 @@ nav:
       - "2.4 Comparar los algoritmos": u02/04-comparar.md
       - "2.5 Simulador": u02/05-simulador.md
       - "P2 Ejercicios": u02/ejercicios.md
+  - "U3 · Procesos desde el código":
+      - u03/index.md
+      - "3.1 Tu propio proceso": u03/01-tu-proceso.md
+      - "3.2 Lanzar otro programa y esperar": u03/02-lanzar-esperar.md
+      - "3.3 Un programa tuyo como hijo: -cp": u03/03-tu-hijo.md
+      - "3.4 Argumentos y código de salida": u03/04-argumentos-codigo.md
+      - "3.5 Errores típicos al empezar": u03/05-errores.md
+      - "P3 Ejercicios": u03/ejercicios.md
   - Simulador de examen: simulador-examen.md
   - Chuleta: chuleta.md

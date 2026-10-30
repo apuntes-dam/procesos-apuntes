@@ -35,3 +35,16 @@
 ## Mejor algoritmo
 
 El de **menor T medio**, **menor E medio** y **mayor I medio**.
+
+## Procesos desde el código
+
+| Quiero... | Java / Kotlin | Python | C# |
+|---|---|---|---|
+| Mi PID | `ProcessHandle.current().pid()` | `os.getpid()` | `Process.GetCurrentProcess().Id` |
+| Lanzar un hijo | `new ProcessBuilder(prog, arg...).start()` | `subprocess.Popen([prog, arg...])` | `Process.Start(prog, args)` |
+| ¿Sigue vivo? | `hijo.isAlive()` | `proceso.poll() is None` | `!hijo.HasExited` |
+| Esperar y recoger el código | `hijo.waitFor()` | `proceso.wait()` | `hijo.WaitForExit()` + `ExitCode` |
+| Argumentos del hijo | `args` | `sys.argv[1:]` | `args` |
+| Terminar con un código | `System.exit(1)` | `sys.exit(1)` | `Environment.Exit(1)` |
+
+Reglas: **preparar no es lanzar** (hasta `start()` no hay hijo) · guarda siempre el `Process` · programa y argumentos, **cada uno aparte** · un hijo Java necesita `-cp` con `System.getProperty("java.class.path")` · código **0 = bien**, otro = error, y hay que terminar con `exit` para que cuente. Más en la [unidad 3](u03/index.md).
