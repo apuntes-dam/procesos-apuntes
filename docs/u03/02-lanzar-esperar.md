@@ -1,5 +1,14 @@
 # 3.2 Lanzar otro programa y esperar
 
+<div class="narrador" data-slug="u03-02-lanzar-esperar" data-voces="mujer:Mujer,hombre:Hombre,hombre2:Hombre 2" data-titulo="Resumen de lanzar y esperar"></div>
+
+??? note "Leer el resumen"
+    Preparar un proceso no es lo mismo que lanzarlo. Cuando creas el constructor de procesos, solo has dicho qué programa se va a ejecutar. El hijo no existe hasta que lo lanzas.
+    Al lanzarlo, guarda el proceso que te devuelve. Sin él, no puedes preguntarle por su PID, ni saber si sigue vivo, ni esperarlo.
+    Esperar a un hijo bloquea al padre hasta que el hijo termina. Cuando acaba, recibes su código de salida. Por convención, cero significa que todo ha ido bien, y cualquier otro número indica un problema.
+    Si lanzas dos hijos, lánzalos antes de empezar a esperar, para que trabajen a la vez. La espera es en orden: si esperas primero al más lento, el otro ya habrá terminado cuando le toque, y no esperarás nada más. El tiempo total es el del más lento, no la suma.
+
+
 Tu programa (el **padre**) puede crear otro proceso (el **hijo**). Hay cuatro cosas que querrás hacer: **lanzarlo**, **quedarte con él** para consultarlo, **esperar** a que termine y **saber cómo ha ido**.
 
 !!! info "Un hijo que se puede probar en cualquier equipo"

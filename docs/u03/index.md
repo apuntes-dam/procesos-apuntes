@@ -1,5 +1,15 @@
 # U3 · Procesos desde el código
 
+<div class="narrador" data-slug="u03-index" data-voces="mujer:Mujer,hombre:Hombre,hombre2:Hombre 2" data-titulo="Resumen de la unidad 3"></div>
+
+??? note "Leer el resumen"
+    Hasta ahora has visto los procesos por fuera. En esta unidad los creas tú, desde un programa.
+    Es una ruta de diez pasos, y cada uno añade una sola idea. Empiezas por mirar tu propio proceso y su PID. Después lanzas otro programa, el hijo, y te quedas con él para poder preguntarle cosas. Aprendes a esperar a que termine y a recoger su código de salida, donde cero significa que todo ha ido bien.
+    Más adelante, el hijo es una clase tuya, y descubres por qué hay que decirle dónde están sus clases. Después le pasas datos con argumentos, y el hijo avisa del resultado con su código de salida.
+    El lenguaje es solo la herramienta. Los ejemplos están en Java, Kotlin, Python y C#, y todos se han ejecutado de verdad.
+    En cada paso hay una pregunta de comprensión. Contéstala antes de mirar la respuesta, y haz los ejercicios sin copiar el ejemplo.
+
+
 Hasta ahora has visto los procesos **por fuera**: qué son, por qué estados pasan y cómo reparte la CPU el planificador. En esta unidad los **creas y controlas tú**, desde un programa: lanzas otro programa, esperas a que termine, le pasas datos y miras cómo ha acabado.
 
 !!! info "El lenguaje es solo la herramienta"

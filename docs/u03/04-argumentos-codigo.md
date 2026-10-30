@@ -1,5 +1,15 @@
 # 3.4 Argumentos y código de salida
 
+<div class="narrador" data-slug="u03-04-argumentos-codigo" data-voces="mujer:Mujer,hombre:Hombre,hombre2:Hombre 2" data-titulo="Resumen de argumentos y código de salida"></div>
+
+??? note "Leer el resumen"
+    Hay dos formas de comunicarte con un hijo sin leer lo que escribe. Lo que le pasas al lanzarlo, que son los argumentos, y lo que te devuelve al terminar, que es el código de salida.
+    Al lanzar un proceso, el programa y cada argumento van como piezas separadas. Si lo escribes todo en una sola cadena, se toma por el nombre del programa y falla. Y recuerda que el argumento lo interpreta el programa lanzado, no el lenguaje.
+    El hijo recibe los argumentos en su lista, y debe comprobar cuántos le han llegado antes de leerlos. Si faltan, escribe un error y termina con un código distinto de cero.
+    Ojo: escribir el error no basta. Si el hijo solo escribe el mensaje y termina, su código será cero, y el padre creerá que todo ha ido bien. Hay que terminar con un código de salida.
+    Y si el hijo falla, el padre no se cae. Lee el código y decide qué hacer.
+
+
 Dos formas de comunicarse con un hijo **sin leer lo que escribe**: lo que le pasas al lanzarlo (los **argumentos**) y lo que te devuelve al terminar (el **código de salida**).
 
 ## Paso 8 · Los argumentos van como piezas separadas
