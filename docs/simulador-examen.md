@@ -1,9 +1,3 @@
----
-search:
-  exclude: true
-noindex: true
----
-
 # Simulador de examen
 
 Practica como en un examen de la unidad: **preguntas de teoría** (test) y **ejercicios prácticos** (calcular T, E e I de cada algoritmo, escribir la fila del diagrama de Gantt, resolver un ejercicio completo y predecir qué hace un programa con hilos y procesos).
