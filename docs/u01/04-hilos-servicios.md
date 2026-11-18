@@ -739,6 +739,954 @@ El hilo añadió su texto a la **misma** lista que ve el programa principal. El 
 !!! note "¿Procesos o hilos?"
     Se usan **procesos** cuando se quiere **aislamiento** (que un fallo no tumbe al resto) o ejecutar **otro programa**. Se usan **hilos** cuando se quiere hacer varias cosas **dentro del mismo programa** compartiendo datos con rapidez; pero entonces hay que **sincronizar** los accesos, como se vio en la [sección crítica](03-planificador.md). Cambiar de un hilo a otro del mismo proceso también es más barato, porque no hay que cambiar de memoria.
 
+## Cuando dos hilos tocan el mismo dato
+
+En [1.3](03-planificador.md) se vio la **sección crítica** con dos **procesos** compitiendo por el mismo saldo. Entre hilos del mismo proceso el problema es el mismo —**más fácil todavía**, porque comparten memoria directamente, sin pasar por el sistema operativo— y aquí se ve con hilos reales.
+
+Dos hilos (`Ana` y `Luis`) intentan retirar 80 € de un saldo compartido de 100 €. Cada uno primero **comprueba** que hay saldo suficiente y luego **retira**; entre las dos cosas hay una pequeña pausa (como un cajero que "cuenta los billetes"), a propósito, para que se note el problema:
+
+<div class="pg" data-pg="carrera" markdown="1">
+
+<div class="pg-panel" data-lang="java" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Java · como función</p>
+
+```java
+public class Main {
+    static int saldo = 100;
+
+    static void retirar(String quien, int cantidad) {
+        if (saldo >= cantidad) {
+            try {
+                Thread.sleep(50);                                 // el cajero "cuenta los billetes": deja tiempo a que el otro hilo entre
+            } catch (InterruptedException e) {
+                return;
+            }
+            saldo -= cantidad;
+            System.out.println(quien + " retira " + cantidad + ". Saldo: " + saldo);
+        } else {
+            System.out.println(quien + ": saldo insuficiente");
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread ana = new Thread(() -> retirar("Ana", 80));
+        Thread luis = new Thread(() -> retirar("Luis", 80));
+        ana.start();
+        luis.start();
+        ana.join();
+        luis.join();
+        System.out.println("Saldo final: " + saldo);
+    }
+}
+```
+
+**Salida:**
+
+```text
+Luis retira 80. Saldo: -60
+Ana retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="java" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Java · como clase</p>
+
+```java
+public class Demo {
+    private int saldo = 100;
+
+    void retirar(String quien, int cantidad) {
+        if (saldo >= cantidad) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                return;
+            }
+            saldo -= cantidad;
+            System.out.println(quien + " retira " + cantidad + ". Saldo: " + saldo);
+        } else {
+            System.out.println(quien + ": saldo insuficiente");
+        }
+    }
+
+    void ejecutar() throws InterruptedException {
+        Thread ana = new Thread(() -> retirar("Ana", 80));
+        Thread luis = new Thread(() -> retirar("Luis", 80));
+        ana.start();
+        luis.start();
+        ana.join();
+        luis.join();
+        System.out.println("Saldo final: " + saldo);
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new Demo().ejecutar();
+    }
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: -60
+Luis retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Kotlin · como función</p>
+
+```kotlin
+var saldo = 100
+
+fun retirar(quien: String, cantidad: Int) {
+    if (saldo >= cantidad) {
+        Thread.sleep(50)                                           // el cajero "cuenta los billetes"
+        saldo -= cantidad
+        println("$quien retira $cantidad. Saldo: $saldo")
+    } else {
+        println("$quien: saldo insuficiente")
+    }
+}
+
+fun main() {
+    val ana = Thread { retirar("Ana", 80) }
+    val luis = Thread { retirar("Luis", 80) }
+    ana.start(); luis.start()
+    ana.join(); luis.join()
+    println("Saldo final: $saldo")
+}
+```
+
+**Salida:**
+
+```text
+Luis retira 80. Saldo: -60
+Ana retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Kotlin · como clase</p>
+
+```kotlin
+class Demo {
+    private var saldo = 100
+
+    fun retirar(quien: String, cantidad: Int) {
+        if (saldo >= cantidad) {
+            Thread.sleep(50)
+            saldo -= cantidad
+            println("$quien retira $cantidad. Saldo: $saldo")
+        } else {
+            println("$quien: saldo insuficiente")
+        }
+    }
+
+    fun ejecutar() {
+        val ana = Thread { retirar("Ana", 80) }
+        val luis = Thread { retirar("Luis", 80) }
+        ana.start(); luis.start()
+        ana.join(); luis.join()
+        println("Saldo final: $saldo")
+    }
+}
+
+fun main() {
+    Demo().ejecutar()
+}
+```
+
+**Salida:**
+
+```text
+Luis retira 80. Saldo: -60
+Ana retira 80. Saldo: 20
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Python · como función</p>
+
+```python
+import threading
+import time
+
+saldo = 100
+
+
+def retirar(quien, cantidad):
+    global saldo
+    if saldo >= cantidad:
+        time.sleep(0.05)
+        saldo -= cantidad
+        print(f"{quien} retira {cantidad}. Saldo: {saldo}")
+    else:
+        print(f"{quien}: saldo insuficiente")
+
+
+if __name__ == "__main__":
+    ana = threading.Thread(target=retirar, args=("Ana", 80))
+    luis = threading.Thread(target=retirar, args=("Luis", 80))
+    ana.start()
+    luis.start()
+    ana.join()
+    luis.join()
+    print("Saldo final:", saldo)
+```
+
+**Salida:**
+
+```text
+Luis retira 80. Saldo: 20
+Ana retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Python · como clase</p>
+
+```python
+import threading
+import time
+
+
+class Demo:
+    saldo = 100                                                    # atributo de clase: el estado compartido
+
+    @classmethod
+    def retirar(cls, quien, cantidad):
+        if cls.saldo >= cantidad:
+            time.sleep(0.05)
+            cls.saldo -= cantidad
+            print(f"{quien} retira {cantidad}. Saldo: {cls.saldo}")
+        else:
+            print(f"{quien}: saldo insuficiente")
+
+    @classmethod
+    def ejecutar(cls):
+        ana = threading.Thread(target=cls.retirar, args=("Ana", 80))
+        luis = threading.Thread(target=cls.retirar, args=("Luis", 80))
+        ana.start()
+        luis.start()
+        ana.join()
+        luis.join()
+        print("Saldo final:", cls.saldo)
+
+
+if __name__ == "__main__":
+    Demo.ejecutar()
+```
+
+**Salida:**
+
+```text
+Luis retira 80. Saldo: 20
+Ana retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">C# · como función</p>
+
+```csharp
+int saldo = 100;
+
+void Retirar(string quien, int cantidad)
+{
+    if (saldo >= cantidad)
+    {
+        Thread.Sleep(50);
+        saldo -= cantidad;
+        Console.WriteLine(quien + " retira " + cantidad + ". Saldo: " + saldo);
+    }
+    else
+    {
+        Console.WriteLine(quien + ": saldo insuficiente");
+    }
+}
+
+var ana = new Thread(() => Retirar("Ana", 80));
+var luis = new Thread(() => Retirar("Luis", 80));
+ana.Start();
+luis.Start();
+ana.Join();
+luis.Join();
+Console.WriteLine("Saldo final: " + saldo);
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: -60
+Luis retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="clase" markdown="1">
+
+<p class="pg-cab">C# · como clase</p>
+
+```csharp
+var demo = new Demo();
+demo.Ejecutar();
+
+class Demo
+{
+    private int saldo = 100;
+
+    public void Retirar(string quien, int cantidad)
+    {
+        if (saldo >= cantidad)
+        {
+            Thread.Sleep(50);
+            saldo -= cantidad;
+            Console.WriteLine(quien + " retira " + cantidad + ". Saldo: " + saldo);
+        }
+        else
+        {
+            Console.WriteLine(quien + ": saldo insuficiente");
+        }
+    }
+
+    public void Ejecutar()
+    {
+        var ana = new Thread(() => Retirar("Ana", 80));
+        var luis = new Thread(() => Retirar("Luis", 80));
+        ana.Start();
+        luis.Start();
+        ana.Join();
+        luis.Join();
+        Console.WriteLine("Saldo final: " + saldo);
+    }
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: -60
+Luis retira 80. Saldo: -60
+Saldo final: -60
+```
+
+</div>
+
+</div>
+
+Los dos hilos comprueban el saldo **antes** de que ninguno lo haya modificado todavía, así que los dos ven 100 € y los dos pasan la comprobación. El resultado de **esta** ejecución es el de arriba: no es un número fijo, es lo que ha salido realmente al generar esta página, y puede no ser el esperado. **No hay ningún error ni excepción**: el programa termina normalmente, solo que con un resultado mal calculado. Es la misma sección crítica de 1.3, solo que ahora el dato compartido vive en el **mismo proceso**.
+
+### La solución: exclusión mutua real
+
+El mismo programa, pero con `synchronized` (Java y Kotlin) o `lock`/`Lock` (C# y Python) alrededor de la comprobación **y** la retirada, para que las dos ocurran como una sola operación indivisible:
+
+<div class="pg" data-pg="carrera-sync" markdown="1">
+
+<div class="pg-panel" data-lang="java" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Java · como función</p>
+
+```java
+public class Main {
+    static int saldo = 100;
+
+    static synchronized void retirar(String quien, int cantidad) {
+        if (saldo >= cantidad) {
+            try {
+                Thread.sleep(50);                                 // el cajero "cuenta los billetes": deja tiempo a que el otro hilo entre
+            } catch (InterruptedException e) {
+                return;
+            }
+            saldo -= cantidad;
+            System.out.println(quien + " retira " + cantidad + ". Saldo: " + saldo);
+        } else {
+            System.out.println(quien + ": saldo insuficiente");
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread ana = new Thread(() -> retirar("Ana", 80));
+        Thread luis = new Thread(() -> retirar("Luis", 80));
+        ana.start();
+        luis.start();
+        ana.join();
+        luis.join();
+        System.out.println("Saldo final: " + saldo);
+    }
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="java" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Java · como clase</p>
+
+```java
+public class Demo {
+    private int saldo = 100;
+
+    synchronized void retirar(String quien, int cantidad) {
+        if (saldo >= cantidad) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                return;
+            }
+            saldo -= cantidad;
+            System.out.println(quien + " retira " + cantidad + ". Saldo: " + saldo);
+        } else {
+            System.out.println(quien + ": saldo insuficiente");
+        }
+    }
+
+    void ejecutar() throws InterruptedException {
+        Thread ana = new Thread(() -> retirar("Ana", 80));
+        Thread luis = new Thread(() -> retirar("Luis", 80));
+        ana.start();
+        luis.start();
+        ana.join();
+        luis.join();
+        System.out.println("Saldo final: " + saldo);
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new Demo().ejecutar();
+    }
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Kotlin · como función</p>
+
+```kotlin
+val cerrojo = Any()
+var saldo = 100
+
+fun retirar(quien: String, cantidad: Int) {
+    synchronized(cerrojo) {
+        if (saldo >= cantidad) {
+            Thread.sleep(50)
+            saldo -= cantidad
+            println("$quien retira $cantidad. Saldo: $saldo")
+        } else {
+            println("$quien: saldo insuficiente")
+        }
+    }
+}
+
+fun main() {
+    val ana = Thread { retirar("Ana", 80) }
+    val luis = Thread { retirar("Luis", 80) }
+    ana.start(); luis.start()
+    ana.join(); luis.join()
+    println("Saldo final: $saldo")
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Kotlin · como clase</p>
+
+```kotlin
+class Demo {
+    private var saldo = 100
+
+    @Synchronized
+    fun retirar(quien: String, cantidad: Int) {
+        if (saldo >= cantidad) {
+            Thread.sleep(50)
+            saldo -= cantidad
+            println("$quien retira $cantidad. Saldo: $saldo")
+        } else {
+            println("$quien: saldo insuficiente")
+        }
+    }
+
+    fun ejecutar() {
+        val ana = Thread { retirar("Ana", 80) }
+        val luis = Thread { retirar("Luis", 80) }
+        ana.start(); luis.start()
+        ana.join(); luis.join()
+        println("Saldo final: $saldo")
+    }
+}
+
+fun main() {
+    Demo().ejecutar()
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Python · como función</p>
+
+```python
+import threading
+import time
+
+saldo = 100
+cerrojo = threading.Lock()
+
+
+def retirar(quien, cantidad):
+    global saldo
+    with cerrojo:
+        if saldo >= cantidad:
+            time.sleep(0.05)
+            saldo -= cantidad
+            print(f"{quien} retira {cantidad}. Saldo: {saldo}")
+        else:
+            print(f"{quien}: saldo insuficiente")
+
+
+if __name__ == "__main__":
+    ana = threading.Thread(target=retirar, args=("Ana", 80))
+    luis = threading.Thread(target=retirar, args=("Luis", 80))
+    ana.start()
+    luis.start()
+    ana.join()
+    luis.join()
+    print("Saldo final:", saldo)
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="python" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Python · como clase</p>
+
+```python
+import threading
+import time
+
+
+class Demo:
+    saldo = 100
+    cerrojo = threading.Lock()                                     # uno solo, compartido por la clase
+
+    @classmethod
+    def retirar(cls, quien, cantidad):
+        with cls.cerrojo:
+            if cls.saldo >= cantidad:
+                time.sleep(0.05)
+                cls.saldo -= cantidad
+                print(f"{quien} retira {cantidad}. Saldo: {cls.saldo}")
+            else:
+                print(f"{quien}: saldo insuficiente")
+
+    @classmethod
+    def ejecutar(cls):
+        ana = threading.Thread(target=cls.retirar, args=("Ana", 80))
+        luis = threading.Thread(target=cls.retirar, args=("Luis", 80))
+        ana.start()
+        luis.start()
+        ana.join()
+        luis.join()
+        print("Saldo final:", cls.saldo)
+
+
+if __name__ == "__main__":
+    Demo.ejecutar()
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">C# · como función</p>
+
+```csharp
+int saldo = 100;
+object cerrojo = new object();
+
+void Retirar(string quien, int cantidad)
+{
+    lock (cerrojo)
+    {
+        if (saldo >= cantidad)
+        {
+            Thread.Sleep(50);
+            saldo -= cantidad;
+            Console.WriteLine(quien + " retira " + cantidad + ". Saldo: " + saldo);
+        }
+        else
+        {
+            Console.WriteLine(quien + ": saldo insuficiente");
+        }
+    }
+}
+
+var ana = new Thread(() => Retirar("Ana", 80));
+var luis = new Thread(() => Retirar("Luis", 80));
+ana.Start();
+luis.Start();
+ana.Join();
+luis.Join();
+Console.WriteLine("Saldo final: " + saldo);
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="clase" markdown="1">
+
+<p class="pg-cab">C# · como clase</p>
+
+```csharp
+var demo = new Demo();
+demo.Ejecutar();
+
+class Demo
+{
+    private int saldo = 100;
+    private readonly object cerrojo = new();
+
+    public void Retirar(string quien, int cantidad)
+    {
+        lock (cerrojo)
+        {
+            if (saldo >= cantidad)
+            {
+                Thread.Sleep(50);
+                saldo -= cantidad;
+                Console.WriteLine(quien + " retira " + cantidad + ". Saldo: " + saldo);
+            }
+            else
+            {
+                Console.WriteLine(quien + ": saldo insuficiente");
+            }
+        }
+    }
+
+    public void Ejecutar()
+    {
+        var ana = new Thread(() => Retirar("Ana", 80));
+        var luis = new Thread(() => Retirar("Luis", 80));
+        ana.Start();
+        luis.Start();
+        ana.Join();
+        luis.Join();
+        Console.WriteLine("Saldo final: " + saldo);
+    }
+}
+```
+
+**Salida:**
+
+```text
+Ana retira 80. Saldo: 20
+Luis: saldo insuficiente
+Saldo final: 20
+```
+
+</div>
+
+</div>
+
+Ahora solo uno de los dos hilos consigue retirar (el otro ve que ya no hay saldo suficiente y se para), y el saldo final es siempre correcto. **Quién gana** (Ana o Luis) puede variar de una ejecución a otra —eso no importa—, pero el resultado **nunca** deja el saldo mal calculado. Esto es exactamente la sección crítica aplicada a hilos: mientras uno está dentro, el otro espera.
+
+### Una alternativa más ligera: clases atómicas
+
+Cuando el dato compartido es **una sola variable** y la operación es **una sola** (sumar uno, por ejemplo), no hace falta un cerrojo completo: basta una operación que el propio hardware garantiza indivisible. Java y Kotlin tienen `AtomicInteger`; C# tiene `Interlocked`. Cuatro hilos sumando 100 000 veces cada uno, sin ningún cerrojo explícito:
+
+<div class="pg" data-pg="carrera-atomica" markdown="1">
+
+<div class="pg-panel" data-lang="java" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Java · como función</p>
+
+```java
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class Main {
+    static AtomicInteger cuenta = new AtomicInteger(0);
+
+    static void sumar() {
+        for (int i = 0; i < 100_000; i++) cuenta.incrementAndGet();          // en vez de cuenta++
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread[] hilos = new Thread[4];
+        for (int i = 0; i < 4; i++) {
+            hilos[i] = new Thread(Main::sumar);
+            hilos[i].start();
+        }
+        for (Thread h : hilos) h.join();
+        System.out.println("Esperado 400000, obtenido " + cuenta.get());
+    }
+}
+```
+
+**Salida:**
+
+```text
+Esperado 400000, obtenido 400000
+```
+
+</div>
+
+<div class="pg-panel" data-lang="java" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Java · como clase</p>
+
+```java
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class Demo {
+    private final AtomicInteger cuenta = new AtomicInteger(0);
+
+    void sumar() {
+        for (int i = 0; i < 100_000; i++) cuenta.incrementAndGet();
+    }
+
+    void ejecutar() throws InterruptedException {
+        Thread[] hilos = new Thread[4];
+        for (int i = 0; i < 4; i++) {
+            hilos[i] = new Thread(this::sumar);
+            hilos[i].start();
+        }
+        for (Thread h : hilos) h.join();
+        System.out.println("Esperado 400000, obtenido " + cuenta.get());
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new Demo().ejecutar();
+    }
+}
+```
+
+**Salida:**
+
+```text
+Esperado 400000, obtenido 400000
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">Kotlin · como función</p>
+
+```kotlin
+import java.util.concurrent.atomic.AtomicInteger
+
+val cuenta = AtomicInteger(0)
+
+fun sumar() {
+    repeat(100_000) { cuenta.incrementAndGet() }
+}
+
+fun main() {
+    val hilos = (1..4).map { Thread(::sumar) }
+    hilos.forEach { it.start() }
+    hilos.forEach { it.join() }
+    println("Esperado 400000, obtenido ${cuenta.get()}")
+}
+```
+
+**Salida:**
+
+```text
+Esperado 400000, obtenido 400000
+```
+
+</div>
+
+<div class="pg-panel" data-lang="kotlin" data-forma="clase" markdown="1">
+
+<p class="pg-cab">Kotlin · como clase</p>
+
+```kotlin
+import java.util.concurrent.atomic.AtomicInteger
+
+class Demo {
+    private val cuenta = AtomicInteger(0)
+
+    fun sumar() {
+        repeat(100_000) { cuenta.incrementAndGet() }
+    }
+
+    fun ejecutar() {
+        val hilos = (1..4).map { Thread { sumar() } }
+        hilos.forEach { it.start() }
+        hilos.forEach { it.join() }
+        println("Esperado 400000, obtenido ${cuenta.get()}")
+    }
+}
+
+fun main() {
+    Demo().ejecutar()
+}
+```
+
+**Salida:**
+
+```text
+Esperado 400000, obtenido 400000
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="funcion" markdown="1">
+
+<p class="pg-cab">C# · como función</p>
+
+```csharp
+int cuenta = 0;
+
+void Sumar()
+{
+    for (int i = 0; i < 100_000; i++) Interlocked.Increment(ref cuenta);
+}
+
+var hilos = new Thread[4];
+for (int i = 0; i < 4; i++)
+{
+    hilos[i] = new Thread(Sumar);
+    hilos[i].Start();
+}
+foreach (var h in hilos) h.Join();
+Console.WriteLine("Esperado 400000, obtenido " + cuenta);
+```
+
+**Salida:**
+
+```text
+Esperado 400000, obtenido 400000
+```
+
+</div>
+
+<div class="pg-panel" data-lang="csharp" data-forma="clase" markdown="1">
+
+<p class="pg-cab">C# · como clase</p>
+
+```csharp
+var demo = new Demo();
+demo.Ejecutar();
+
+class Demo
+{
+    private int cuenta = 0;
+
+    void Sumar()
+    {
+        for (int i = 0; i < 100_000; i++) Interlocked.Increment(ref cuenta);
+    }
+
+    public void Ejecutar()
+    {
+        var hilos = new Thread[4];
+        for (int i = 0; i < 4; i++)
+        {
+            hilos[i] = new Thread(Sumar);
+            hilos[i].Start();
+        }
+        foreach (var h in hilos) h.Join();
+        Console.WriteLine("Esperado 400000, obtenido " + cuenta);
+    }
+}
+```
+
+**Salida:**
+
+```text
+Esperado 400000, obtenido 400000
+```
+
+</div>
+
+</div>
+
+El resultado es siempre el esperado, sin usar `synchronized` ni `lock`: cada `incrementAndGet()`/`Interlocked.Increment` es, para el procesador, un solo paso que no se puede partir a la mitad. No sirve para una sección crítica con varias instrucciones (como la del cajero, que comprueba y retira): para eso hace falta un cerrojo de verdad.
+
+!!! info "Python no tiene una clase atómica"
+    La biblioteca estándar de Python no trae un equivalente a `AtomicInteger`. Para proteger un dato compartido, aunque sea una sola variable, se usa `threading.Lock` igual que en el ejemplo de arriba.
+
 ## Servicios (demonios)
 
 Un **servicio** (en Linux, **demonio** o *daemon*) es un proceso que:

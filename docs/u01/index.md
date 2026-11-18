@@ -27,7 +27,7 @@ Cuando ejecutas un programa, el sistema operativo crea un **proceso**. Con mucho
 
 ## Ejercicios de la unidad
 
-Hay [8 ejercicios](ejercicios.md) de esta unidad.
+Hay [9 ejercicios](ejercicios.md) de esta unidad.
 
 ## Antes de pasar a los ejercicios
 

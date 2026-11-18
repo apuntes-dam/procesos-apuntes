@@ -83,3 +83,13 @@ Responde con tus palabras. Las soluciones modelo están bloqueadas: intenta prim
 <div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>(1) Concurrente: un solo cocinero prepara una ensalada y una sopa alternando (las dos tareas están en curso, pero en cada instante hace una cosa). Paralela: dos cocineros, uno pica y otro remueve, a la vez. La paralela necesita varios núcleos; la concurrente puede hacerse con uno.
 ... (resto de la solución bloqueado)</code></pre></div>
 </details>
+
+## Ejercicio P1.9
+
+**Condición de carrera entre hilos.** Dos hilos del mismo proceso retiran dinero de un saldo compartido de 100 €: cada uno primero comprueba que hay saldo suficiente y, tras una pequeña pausa, lo retira. Los dos piden retirar 80 €. (1) Explica, paso a paso, por qué el saldo final puede acabar siendo incorrecto (incluso negativo) sin que el programa dé ningún error. (2) ¿Es esto lo mismo que la sección crítica de dos **procesos** compitiendo por un saldo (1.3), o algo distinto? (3) Indica dos formas reales de arreglarlo y en qué se diferencian: una que sirva para proteger varias instrucciones seguidas, y otra pensada solo para una variable con una sola operación.
+
+<details class="sol" data-key="procesos/u01/P1.9">
+<summary>Solución modelo (bloqueada)</summary>
+<div class="sol-body"><p class="sol-aviso">🔒 La solución completa está bloqueada. Esto es solo un ejemplo de cómo empieza:</p><pre><code>(1) Los dos hilos ejecutan "comprobar" antes de que ninguno haya ejecutado "retirar": ambos leen saldo = 100, ambos ven que 100 &gt;= 80 y los dos pasan la comprobación. La pausa entre comprobar y retirar agranda esa ventana a propósito. Cuando cada uno resta 80, el resultado depende del orden exacto en que se entrelazan las lecturas y escrituras (puede acabar en -60, o en 20 si uno pisa la resta del otro): no hay excepción ni mensaje de error, solo un cálculo incorrecto.
+... (resto de la solución bloqueado)</code></pre></div>
+</details>
